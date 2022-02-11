@@ -34,7 +34,12 @@ async function runCollection(driver, colName) {
     const url = co.getUrl(colName, a.id)
     const bid = colConfig.toBid
 
-    await b.placeBid(driver, url, colName, a.id, bid)
+    try {
+      await b.placeBid(driver, url, colName, a.id, bid)
+    } catch {
+      console.log(`Error: ${a.id}`)
+      await co.updateCollection(colName, a.id, 'error')
+    }
   }
 
   console.log(`${colName} collection took ${h.getTook(startTime)}s`)

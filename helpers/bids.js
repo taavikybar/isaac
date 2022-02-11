@@ -8,7 +8,15 @@ async function placeBid(driver, url, colName, id, bid) {
   const startTime = performance.now()
   let windows = await driver.getAllWindowHandles()
   await h.sleep(1000)
-  driver.switchTo().window(windows[1])
+
+  try {
+    if (windows.length > 1) {
+      driver.switchTo().window(windows[1])
+    }
+  } catch {
+    console.log(`Initial window switch error: ${a.id}`)
+    return false
+  }
   await h.sleep(1000)
   driver.navigate().to(url);
   await h.sleep(3000)
@@ -24,7 +32,7 @@ async function placeBid(driver, url, colName, id, bid) {
   }
 
   // open bid modal
-  await h.sleep(2000)
+  await h.sleep(1000)
   const offerBtn = await driver.findElement(By.xpath(`//button[text()='${c.offerButtonTxt}']`))
   await offerBtn.click()
 
@@ -33,14 +41,21 @@ async function placeBid(driver, url, colName, id, bid) {
   await offerInput.sendKeys(bid)
 
   // submit bid
-  await h.sleep(2000)
+  await h.sleep(1000)
   const offerBtn2 = await driver.findElement(By.xpath(`//button[text()='${c.finalOfferButtonTxt}']`))
   await offerBtn2.click()
 
   // switch to metamask popup
   await h.sleep(5000)
   windows = await driver.getAllWindowHandles()
-  driver.switchTo().window(windows[2])
+  try {
+    if (windows.length > 2) {
+      driver.switchTo().window(windows[2])
+    }
+  } catch {
+    console.log(`Metamask window switch error: ${a.id}`)
+    return false
+  }
   await h.sleep(1000)
 
   // sign bid
