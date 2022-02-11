@@ -1,6 +1,6 @@
 const webdriver = require("selenium-webdriver");
 const h = require('./helpers')
-const c = require('./constants')
+const c = require('../constants')
 const co = require('./collection')
 const By = webdriver.By
 
@@ -15,7 +15,7 @@ async function placeBid(driver, url, colName, id, bid) {
 
   // check if offers present
   try {
-    const noOffers = await driver.findElement(By.xpath("//div[text()='No offers yet']"))
+    const noOffers = await driver.findElement(By.xpath(`//div[text()='${c.nOofferxTxt}']`))
     await driver.wait(webdriver.until.elementIsVisible(noOffers), 10000);
   } catch {
     await co.updateCollection(colName, id, c.bidPresent)
@@ -25,16 +25,16 @@ async function placeBid(driver, url, colName, id, bid) {
 
   // open bid modal
   await h.sleep(2000)
-  const offerBtn = await driver.findElement(By.xpath("//button[text()='Make offer']"))
+  const offerBtn = await driver.findElement(By.xpath(`//button[text()='${c.offerButtonTxt}']`))
   await offerBtn.click()
 
   // enter bid
-  const offerInput = await driver.findElement(By.xpath("//input[@placeholder='Amount']"))
+  const offerInput = await driver.findElement(By.xpath(`//input[@placeholder='${c.inputPlaceholder}']`))
   await offerInput.sendKeys(bid)
 
   // submit bid
   await h.sleep(2000)
-  const offerBtn2 = await driver.findElement(By.xpath("//button[text()='Make Offer']"))
+  const offerBtn2 = await driver.findElement(By.xpath(`//button[text()='${c.finalOfferButtonTxt}']`))
   await offerBtn2.click()
 
   // switch to metamask popup
@@ -44,7 +44,7 @@ async function placeBid(driver, url, colName, id, bid) {
   await h.sleep(1000)
 
   // sign bid
-  const signBtn = await driver.findElement(By.xpath("//button[text()='Sign']"))
+  const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
   await signBtn.click()
 
   // update collection, reporting 

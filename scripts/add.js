@@ -25,4 +25,4 @@ for (let i=1;i<4655;i++) {
 }
 
 
-addToCollection('cryptofighters',data)
+addToCollection('cryptofighters', data)

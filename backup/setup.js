@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const dappeteer = require('@chainsafe/dappeteer');
 const h = require('./helpers')
-const c = require('./constants')
+const c = require('../constants')
 
 const mmExtPath = '/Users/taavi/Desktop/crypto/metamask-chrome-10.9.2'
 

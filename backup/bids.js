@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { performance } = require('perf_hooks');
 const h = require('./helpers')
-const c = require('./constants')
+const c = require('../constants')
 const co = require('./collection')
 
 async function placeBid(page, metamask, url, bid, useBid, colName, id) {

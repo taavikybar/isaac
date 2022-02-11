@@ -1,7 +1,7 @@
 require('dotenv').config()
 const { performance } = require('perf_hooks');
 const h = require('./helpers/helpers')
-const c = require('./helpers/constants')
+const c = require('./constants')
 const b = require('./helpers/bids')
 const co = require('./helpers/collection')
 const se = require('./helpers/selenium')

@@ -1,6 +1,6 @@
 
 const fs = require('fs');
-const c = require('./constants')
+const c = require('../constants')
 const h = require('./helpers')
 
 async function getCollection(colName) {
