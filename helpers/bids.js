@@ -1,75 +1,53 @@
-const fs = require('fs');
-const { performance } = require('perf_hooks');
+const webdriver = require("selenium-webdriver");
 const h = require('./helpers')
 const c = require('./constants')
 const co = require('./collection')
+const By = webdriver.By
 
-async function placeBid(page, metamask, url, bid, useBid, colName, id) {
+async function placeBid(driver, url, colName, id, bid) {
   const startTime = performance.now()
-  await page.goto(url);
-  page.bringToFront();
+  let windows = await driver.getAllWindowHandles()
   await h.sleep(1000)
+  driver.switchTo().window(windows[1])
+  await h.sleep(1000)
+  driver.navigate().to(url);
+  await h.sleep(3000)
 
-  let btnTxt = c.offerButtonTxt
-
-  if (useBid) {
-    btnTxt = c.bidButtonTxt
-  }
-
-  // if 404
-  const [text404] = await page.$x(`//h1[contains(text(), '${c.text404}')]`);
-
-  if (text404) {
-    await co.updateCollection(colName, id, c.update404)
-    console.log(`${id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
-    return
-  }
-
-  // if offers present
-  const [noOffers] = await page.$x(`//div[contains(text(), '${c.nOofferxTxt}')]`);
-
-  if (!noOffers) {
+  // check if offers present
+  try {
+    const noOffers = await driver.findElement(By.xpath("//div[text()='No offers yet']"))
+    await driver.wait(webdriver.until.elementIsVisible(noOffers), 10000);
+  } catch {
     await co.updateCollection(colName, id, c.bidPresent)
     console.log(`${id}, took: ${h.getTook(startTime)}s, ${c.bidPresent}`)
-    return
+    return false
   }
 
-  // click make offer button
-  await h.sleep(500)
-  const [button] = await page.$x(`//button[contains(., '${btnTxt}')]`);
-  await button.click();
+  // open bid modal
+  await h.sleep(2000)
+  const offerBtn = await driver.findElement(By.xpath("//button[text()='Make offer']"))
+  await offerBtn.click()
 
-  // set bid amount
-  await h.sleep(500)
-  const parts = `${bid}`.split('')
+  // enter bid
+  const offerInput = await driver.findElement(By.xpath("//input[@placeholder='Amount']"))
+  await offerInput.sendKeys(bid)
 
-  for await (const part of parts) {
-    await page.keyboard.type(part);
-    await h.sleep(100)
-  }
+  // submit bid
+  await h.sleep(2000)
+  const offerBtn2 = await driver.findElement(By.xpath("//button[text()='Make Offer']"))
+  await offerBtn2.click()
 
-
-
-  // check agree terms
-  // const tos = await page.waitForSelector('input#tos')
-  // tos.click()
-
-  // make offer
-  await h.sleep(500)
-  // await h.sleep(30000)
-  // const offerBtn = await page.$('.fzwDgL')
-  const offerBtn = await page.$x(`//button[contains(., 'Make Offer')]`);
-  await offerBtn[0].click();
-  // console.log(offerBtn)
-  // console.log(offerBtn.length)
+  // switch to metamask popup
   await h.sleep(5000)
+  windows = await driver.getAllWindowHandles()
+  driver.switchTo().window(windows[2])
+  await h.sleep(1000)
 
-  // await metamask.confirmTransaction();
-  // await metamask.approve({allAccounts: false});
-  // await metamask.sign();
-  await h.sleep(5000000)
+  // sign bid
+  const signBtn = await driver.findElement(By.xpath("//button[text()='Sign']"))
+  await signBtn.click()
 
-  // bid is set
+  // update collection, reporting 
   await co.updateCollection(colName, id, bid)
   c.bidsMade++
   console.log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids`)
