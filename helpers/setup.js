@@ -10,7 +10,10 @@ async function browserSetup() {
       metamaskVersion: 'v10.8.1',
       defaultViewport: null,
       headless: false,
-      // slowMo: 100
+      // product: 'firefox',
+      // slowMo: 100,
+      // executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      // args: ['--disable-popup-blocking','--allow-popups-during-page-unload']
     }
   )
 }

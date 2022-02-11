@@ -49,7 +49,25 @@ async function placeBid(page, metamask, url, bid, useBid, colName, id) {
   }
 
 
+
+  // check agree terms
+  // const tos = await page.waitForSelector('input#tos')
+  // tos.click()
+
+  // make offer
+  await h.sleep(500)
+  // await h.sleep(30000)
+  // const offerBtn = await page.$('.fzwDgL')
+  const offerBtn = await page.$x(`//button[contains(., 'Make Offer')]`);
+  await offerBtn[0].click();
+  // console.log(offerBtn)
+  // console.log(offerBtn.length)
+  await h.sleep(5000)
+
   // await metamask.confirmTransaction();
+  // await metamask.approve({allAccounts: false});
+  // await metamask.sign();
+  await h.sleep(5000000)
 
   // bid is set
   await co.updateCollection(colName, id, bid)
