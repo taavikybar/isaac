@@ -1,27 +1,30 @@
+
 const fs = require('fs');
 const c = require('./constants')
-
-const assetsPath = './assets'
+const h = require('./helpers')
 
 async function getCollection(colName) {
-  const data = await fs.readFileSync(`${assetsPath}/${colName}.json`, 'utf8')
+  const data = await fs.readFileSync(`./assets/${colName}.json`, 'utf8')
   return JSON.parse(data)
 }
 
-const isAssetValid = asset => !asset.bids[getDateKey()]
-
-function getDateKey() {
-  const d = new Date()
-  const year = `${d.getFullYear()}`.split('')
-  return`${d.getDay()}-${d.getMonth()}-${year[2]}${year[3]}`
-}
-
+const isAssetValid = asset => !asset.bids[h.getDateKey()]
 const getUrl = (colName, id) => `${c.assetBaseUrl}/${c.collections[colName].contract}/${id}`
+
+async function updateCollection(colName, id, bid) {
+  const collection = await getCollection(colName)
+  const index = collection.findIndex(a => a.id === id)
+
+  collection[index].bids[h.getDateKey()] = bid
+
+  await fs.writeFileSync(`./assets/${colName}.json`, JSON.stringify(collection))
+}
 
 module.exports = {
   getCollection,
   isAssetValid,
   getUrl,
+  updateCollection,
 }
 
 
@@ -34,4 +37,4 @@ module.exports = {
 // }
 
 
-// const getReportFilename = () => `./reports/${getDateKey()}.json`
+// const getReportFilename = () => `./reports/${h.getDateKey()}.json`
