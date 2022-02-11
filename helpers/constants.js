@@ -15,4 +15,5 @@ module.exports = {
     }
   },
   bidsMade: 0,
+  bidDays: 3,
 }

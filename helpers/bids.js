@@ -39,7 +39,7 @@ async function placeBid(page, metamask, url, bid, useBid, colName, id) {
   const [button] = await page.$x(`//button[contains(., '${btnTxt}')]`);
   await button.click();
 
-  // set bid
+  // set bid amount
   await h.sleep(500)
   const parts = `${bid}`.split('')
 

@@ -12,7 +12,7 @@ async function addToCollection(collectionName, id) {
 
     collection.push({
       id: d,
-      bids: {},
+      bids: [],
     })
   })
 

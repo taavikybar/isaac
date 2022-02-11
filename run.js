@@ -10,6 +10,14 @@ const co = require('./helpers/collection')
 
 
 async function run() {
+  // check all collections
+  const collection = await co.getCheckedCollection('cryptofighters')
+  if (collection.length === 0) {
+    console.log("nothing to bid on")
+    return false
+  }
+
+  // setup
   const startTime = performance.now()
   const browser = await s.browserSetup()
   const metamask = await s.mmSetup(browser)
@@ -25,14 +33,8 @@ async function run() {
 
 async function runCollection(colName, page, metamask) {
   const startTime = performance.now()
-  const collection = await co.getCollection(colName)
-  const checked = collection.filter(co.isAssetValid)
+  const checked = await co.getCheckedCollection(colName)
   const colConfig = c.collections[colName]
-
-  if (checked.length === 0) {
-    console.log("nothing to bid on")
-    return false
-  }
 
   // run bidding on all checked assets
   for (a of checked) {

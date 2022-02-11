@@ -8,33 +8,42 @@ async function getCollection(colName) {
   return JSON.parse(data)
 }
 
-const isAssetValid = asset => !asset.bids[h.getDateKey()]
+async function getCheckedCollection(colName) {
+  const collection = await getCollection(colName)
+  return collection.filter(isAssetValid)
+}
+
+const isAssetValid = asset => {
+  if (asset.bids.length === 0) {
+    return true
+  }
+
+  const MS_PER_DAY = 1000 * 60 * 60 * 24;
+  const lastBid = asset.bids[asset.bids.length - 1].date
+  const lastBidDate = new Date(lastBid)
+  const now = new Date()
+  const daysSince = Math.floor((now - lastBidDate)/MS_PER_DAY)
+
+  return daysSince > c.bidDays
+}
+
 const getUrl = (colName, id) => `${c.assetBaseUrl}/${c.collections[colName].contract}/${id}`
 
 async function updateCollection(colName, id, bid) {
   const collection = await getCollection(colName)
   const index = collection.findIndex(a => a.id === id)
 
-  collection[index].bids[h.getDateKey()] = bid
+  collection[index].bids.push({
+    date: new Date(),
+    bid,
+  })
 
   await fs.writeFileSync(`./assets/${colName}.json`, JSON.stringify(collection))
 }
 
 module.exports = {
-  getCollection,
+  getCheckedCollection,
   isAssetValid,
   getUrl,
   updateCollection,
 }
-
-
-// async function createReport() {
-//   if (fs.existsSync(getReportFilename())) {
-//     console.log('exists')
-//   } else {
-//     await fs.writeFileSync(getReportFilename(), '[]')
-//   }
-// }
-
-
-// const getReportFilename = () => `./reports/${h.getDateKey()}.json`
