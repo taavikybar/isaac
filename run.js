@@ -6,10 +6,9 @@ const b = require('./helpers/bids')
 const co = require('./helpers/collection')
 const se = require('./helpers/selenium')
 
-
 async function run() {
   // check all collections
-  const collection = await co.getCheckedCollection('cryptofighters')
+  const collection = await co.getCheckedCollection(c.collectionToRun)
   if (collection.length === 0) {
     console.log("nothing to bid on")
     return false
@@ -21,7 +20,7 @@ async function run() {
   console.log(`Setup took ${h.getTook(startTime)}s`)
 
   // run collections
-  await runCollection(driver, 'cryptofighters')
+  await runCollection(driver, c.collectionToRun)
 }
 
 async function runCollection(driver, colName) {

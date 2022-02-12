@@ -10,6 +10,8 @@ module.exports = {
   signButtonText: 'Sign',
   text404: 'This page is lost.',
   update404: '404',
+  offerSubmitted: 'Your offer was submitted successfully!',
+  uncertainBid: 'uncertain bid ',
 
   bidsMade: 0,
   bidDays: 3,
@@ -19,6 +21,13 @@ module.exports = {
       contract: '0x87d598064c736dd0c712d329afcfaa0ccc1921a1',
       toBid: 0.05,
       useBid: false,
+    },
+    mooncats: {
+      contract: '0xc3f733ca98e0dad0386979eb96fb1722a1a05e69',
+      toBid: 0.2,
+      useBid: false,
     }
   },
+
+  collectionToRun: 'mooncats',
 }

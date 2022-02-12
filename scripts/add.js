@@ -20,9 +20,10 @@ async function addToCollection(collectionName, id) {
 }
 
 const data = []
-for (let i=1;i<4655;i++) {
+for (let i=1;i<25425;i++) {
   data.push(i)
 }
 
 
-addToCollection('cryptofighters', data)
+// addToCollection('cryptofighters', data)
+addToCollection('mooncats', data)

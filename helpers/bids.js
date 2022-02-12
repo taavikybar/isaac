@@ -21,6 +21,17 @@ async function placeBid(driver, url, colName, id, bid) {
   driver.navigate().to(url);
   await h.sleep(3000)
 
+  // try if 404
+  try {
+    const is404 = await driver.findElement(By.xpath(`//h1[text()='${c.text404}']`))
+    await driver.wait(webdriver.until.elementIsVisible(is404), 1000);
+    await co.updateCollection(colName, id, c.update404)
+    console.log(`${id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
+    return false
+  } catch {
+
+  }
+
   // check if offers present
   try {
     const noOffers = await driver.findElement(By.xpath(`//div[text()='${c.nOofferxTxt}']`))
@@ -63,7 +74,7 @@ async function placeBid(driver, url, colName, id, bid) {
   await signBtn.click()
   await h.sleep(3000)
 
-  // update collection, reporting 
+  // update collection, reporting
   await co.updateCollection(colName, id, bid)
   c.bidsMade++
   console.log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids`)
