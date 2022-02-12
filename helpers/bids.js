@@ -61,6 +61,7 @@ async function placeBid(driver, url, colName, id, bid) {
   // sign bid
   const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
   await signBtn.click()
+  await h.sleep(3000)
 
   // update collection, reporting 
   await co.updateCollection(colName, id, bid)
