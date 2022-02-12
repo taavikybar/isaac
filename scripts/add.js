@@ -20,8 +20,8 @@ async function addToCollection(collectionName, id) {
 }
 
 const data = []
-for (let i=1;i<72;i++) {
+for (let i=1;i<1601;i++) {
   data.push(i)
 }
 
-addToCollection('cryptocards', data)
+addToCollection('etherlambos', data)
