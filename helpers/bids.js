@@ -16,14 +16,8 @@ async function placeBid(driver, url, colName, id, bid) {
     console.log(`window check: ${windows.length}w`)
 
     if (windows.length > 1) {
-      windows.forEach(async (w, i) => {
-        if (i > 0) {
-          await driver.switchTo().window(windows[i])
-          await driver.close()
-        }
-      })
-
-      windows = await driver.getAllWindowHandles()
+      await driver.switchTo().window(windows[1])
+      await driver.close()
       await driver.switchTo().window(windows[0])
       console.log(`window check after closing: ${windows.length}w`)
     }
