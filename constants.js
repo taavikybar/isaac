@@ -26,8 +26,18 @@ module.exports = {
       contract: '0xc3f733ca98e0dad0386979eb96fb1722a1a05e69',
       toBid: 0.2,
       useBid: false,
+    },
+    cryptocards: {
+      contract: '0x3a7dc718eaf31f0a55988161f3d75d7ca785b034',
+      toBid: 0.05,
+      useBid: false,
+    },
+    etherlambos: {
+      contract: '0xda9f43015749056182352e9dc6d3ee0b6293d80a',
+      toBid: 0.2,
+      useBid: false,
     }
   },
 
-  collectionToRun: 'mooncats',
+  collectionToRun: 'etherlambos',
 }
