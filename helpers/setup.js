@@ -26,6 +26,7 @@ async function setup() {
     await el.sendKeys(process.env.PASS);
     let btn = await driver.findElement(By.tagName('button'));
     await btn.click()
+    await driver.close()
 
     return driver
 }

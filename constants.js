@@ -39,5 +39,5 @@ module.exports = {
     }
   },
 
-  collectionToRun: 'etherlambos',
+  collectionToRun: 'mooncats',
 }

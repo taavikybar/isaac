@@ -7,14 +7,28 @@ const By = webdriver.By
 async function placeBid(driver, url, colName, id, bid) {
   const startTime = performance.now()
   let windows = await driver.getAllWindowHandles()
+  await driver.switchTo().window(windows[0])
   await h.sleep(1000)
 
+  // close any unnecessary windows
   try {
+    windows = await driver.getAllWindowHandles()
+    console.log(`window check: ${windows.length}w`)
+
     if (windows.length > 1) {
-      driver.switchTo().window(windows[1])
+      windows.forEach(async (w, i) => {
+        if (i > 0) {
+          await driver.switchTo().window(windows[i])
+          await driver.close()
+        }
+      })
+
+      windows = await driver.getAllWindowHandles()
+      await driver.switchTo().window(windows[0])
+      console.log(`window check after closing: ${windows.length}w`)
     }
   } catch {
-    console.log(`Initial window switch error: ${a.id}`)
+    console.log(`Initial window closing check error: ${a.id}`)
     return false
   }
   await h.sleep(1000)
@@ -60,8 +74,8 @@ async function placeBid(driver, url, colName, id, bid) {
   await h.sleep(5000)
   windows = await driver.getAllWindowHandles()
   try {
-    if (windows.length > 2) {
-      driver.switchTo().window(windows[2])
+    if (windows.length > 1) {
+      driver.switchTo().window(windows[1])
     }
   } catch {
     console.log(`Metamask window switch error: ${a.id}`)
@@ -77,7 +91,8 @@ async function placeBid(driver, url, colName, id, bid) {
   // update collection, reporting
   await co.updateCollection(colName, id, bid)
   c.bidsMade++
-  console.log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids`)
+  windows = await driver.getAllWindowHandles()
+  console.log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
 }
 
 module.exports = {

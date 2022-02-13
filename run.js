@@ -4,7 +4,7 @@ const h = require('./helpers/helpers')
 const c = require('./constants')
 const b = require('./helpers/bids')
 const co = require('./helpers/collection')
-const se = require('./helpers/selenium')
+const s = require('./helpers/setup')
 
 async function run() {
   // check all collections
@@ -16,7 +16,7 @@ async function run() {
 
   // setup
   const startTime = performance.now()
-  const driver = await se.setup()
+  const driver = await s.setup()
   console.log(`Setup took ${h.getTook(startTime)}s`)
 
   // run collections
