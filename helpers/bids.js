@@ -77,7 +77,8 @@ async function placeBid(driver, url, colName, id, bid) {
   // update collection, reporting
   await co.updateCollection(colName, id, bid)
   c.bidsMade++
-  console.log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids`)
+  windows = await driver.getAllWindowHandles()
+  console.log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
 }
 
 module.exports = {
