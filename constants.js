@@ -36,8 +36,13 @@ module.exports = {
       contract: '0xda9f43015749056182352e9dc6d3ee0b6293d80a',
       toBid: 0.2,
       useBid: false,
+    },
+    pixereum: {
+      contract: '0x6f9d53ba6c16fcbe66695e860e72a92581b58aed',
+      toBid: 0.028,
+      useBid: false,
     }
   },
 
-  collectionToRun: 'mooncats',
+  collectionToRun: 'pixereum',
 }
