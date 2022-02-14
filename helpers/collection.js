@@ -18,13 +18,11 @@ const isAssetValid = asset => {
     return true
   }
 
-  const MS_PER_DAY = 1000 * 60 * 60 * 24;
+  const MS_IN_H = 1000 * 60 * 60;
   const lastBid = asset.bids[asset.bids.length - 1].date
-  const lastBidDate = new Date(lastBid)
-  const now = new Date()
-  const daysSince = Math.floor((now - lastBidDate)/MS_PER_DAY)
+  const hoursSince = Math.floor((new Date() - new Date(lastBid)) / MS_IN_H)
 
-  return daysSince > c.bidDays
+  return hoursSince > c.bidDays * 24
 }
 
 const getUrl = (colName, id) => `${c.assetBaseUrl}/${c.collections[colName].contract}/${id}`

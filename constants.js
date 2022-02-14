@@ -46,5 +46,5 @@ module.exports = {
     }
   },
 
-  collectionToRun: 'mooncats',
+  collectionToRun: 'cryptofighters',
 }
