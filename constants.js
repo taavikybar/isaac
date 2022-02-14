@@ -9,9 +9,11 @@ module.exports = {
   bidPresent: 'bids present',
   signButtonText: 'Sign',
   text404: 'This page is lost.',
+  text504: '504',
   update404: '404',
+  update504: '504',
   offerSubmitted: 'Your offer was submitted successfully!',
-  uncertainBid: 'uncertain bid ',
+  uncertainBid: 'uncertain bid',
 
   bidsMade: 0,
   bidDays: 3,

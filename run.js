@@ -38,8 +38,8 @@ async function runCollection(driver, colName) {
 
     try {
       await b.placeBid(driver, url, colName, a.id, bid)
-    } catch {
-      log(`Error: ${a.id}`)
+    } catch (e) {
+      log(`Error: ${a.id}, ${e}`)
       await co.updateCollection(colName, a.id, 'error')
     }
   }

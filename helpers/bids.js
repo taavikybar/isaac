@@ -32,19 +32,30 @@ async function placeBid(driver, url, colName, id, bid) {
 
   // try if 404
   try {
-    const is404 = await driver.findElement(By.xpath(`//h1[text()='${c.text404}']`))
-    await driver.wait(webdriver.until.elementIsVisible(is404), 1000);
+    await driver.wait(
+      webdriver.until.elementLocated(By.xpath(`//*[text()='${c.text404}']`)),
+      1000);
+
     await co.updateCollection(colName, id, c.update404)
     log(`${id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
     return false
-  } catch {
+  } catch { }
 
-  }
+  // try if 504
+  try {
+    await driver.wait(
+      webdriver.until.elementLocated(By.xpath(`//*[text()='${c.text504}']`)),
+      1000);
+
+    await co.updateCollection(colName, id, c.update404)
+    log(`${id}, took: ${h.getTook(startTime)}s, ${c.update504}`)
+    return false
+  } catch { }
 
   // check if offers present
   try {
-    const noOffers = await driver.findElement(By.xpath(`//div[text()='${c.nOofferxTxt}']`))
-    await driver.wait(webdriver.until.elementIsVisible(noOffers), 10000);
+    const noOffers = await driver.wait(
+      webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000);
   } catch {
     await co.updateCollection(colName, id, c.bidPresent)
     log(`${id}, took: ${h.getTook(startTime)}s, ${c.bidPresent}`)
@@ -61,33 +72,45 @@ async function placeBid(driver, url, colName, id, bid) {
   await offerInput.sendKeys(bid)
 
   // submit bid
-  await h.sleep(1000)
+  // await h.sleep(1000)
   const offerBtn2 = await driver.findElement(By.xpath(`//button[text()='${c.finalOfferButtonTxt}']`))
   await offerBtn2.click()
 
   // switch to metamask popup
   await h.sleep(5000)
   windows = await driver.getAllWindowHandles()
-  try {
-    if (windows.length > 1) {
-      driver.switchTo().window(windows[1])
-    }
-  } catch {
-    log(`Metamask window switch error: ${a.id}`)
-    return false
+
+  if (windows.length > 1) {
+    driver.switchTo().window(windows[1])
   }
-  await h.sleep(1000)
+
+  // await h.sleep(1000)
 
   // sign bid
   const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
   await signBtn.click()
   await h.sleep(3000)
 
-  // update collection, reporting
-  await co.updateCollection(colName, id, bid)
-  c.bidsMade++
+  // go back to main window
   windows = await driver.getAllWindowHandles()
-  log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
+  await driver.switchTo().window(windows[0])
+
+  // update collection, reporting
+  try {
+    await driver.wait(
+      webdriver.until.elementLocated(By.xpath(`//*[text()='${c.offerSubmitted}']`)),
+      10000);
+
+    await co.updateCollection(colName, id, bid)
+    c.bidsMade++
+    windows = await driver.getAllWindowHandles()
+    log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
+    return false
+  } catch { }
+
+  // no confirmation modal caught
+  await co.updateCollection(colName, id, c.uncertainBid)
+  log(`${id}, took: ${h.getTook(startTime)}s, ${c.uncertainBid}`)
 }
 
 module.exports = {
