@@ -21,12 +21,12 @@ module.exports = {
   collections: {
     cryptofighters: {
       contract: '0x87d598064c736dd0c712d329afcfaa0ccc1921a1',
-      toBid: 0.05,
+      toBid: 0.08,
       useBid: false,
     },
     mooncats: {
       contract: '0xc3f733ca98e0dad0386979eb96fb1722a1a05e69',
-      toBid: 0.2,
+      toBid: 0.22,
       useBid: false,
     },
     cryptocards: {
@@ -46,5 +46,5 @@ module.exports = {
     }
   },
 
-  collectionToRun: 'cryptofighters',
+  collectionsToRun: ['pixereum', 'cryptofighters', 'mooncats'],
 }

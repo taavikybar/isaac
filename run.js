@@ -10,26 +10,23 @@ const log = require('./helpers/log')
 
 
 async function run() {
-  // check all collections
-  const collection = await co.getCheckedCollection(c.collectionToRun)
-  if (collection.length === 0) {
-    log("nothing to bid on")
-    return false
-  }
-
   // setup
   const startTime = performance.now()
   const driver = await s.setup()
   log(`Setup took ${h.getTook(startTime)}s`)
 
   // run collections
-  await runCollection(driver, c.collectionToRun)
+  for (col of c.collectionsToRun) {
+    await runCollection(driver, col)
+  }
 }
 
 async function runCollection(driver, colName) {
   const startTime = performance.now()
   const checked = await co.getCheckedCollection(colName)
   const colConfig = c.collections[colName]
+
+  log(`Running ${colName} with ${checked.length} assets`)
 
   // run bidding on all checked assets
   for (a of checked) {

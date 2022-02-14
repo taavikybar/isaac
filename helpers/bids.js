@@ -84,7 +84,7 @@ async function placeBid(driver, url, colName, id, bid) {
     driver.switchTo().window(windows[1])
   }
 
-  // await h.sleep(1000)
+  await h.sleep(1000)
 
   // sign bid
   const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
