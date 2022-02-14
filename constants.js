@@ -17,6 +17,7 @@ module.exports = {
 
   bidsMade: 0,
   bidDays: 3,
+  ethInWallet: 0.8,
 
   collections: {
     cryptofighters: {
