@@ -1,23 +1,26 @@
 require('dotenv').config()
 const { performance } = require('perf_hooks');
+
 const h = require('./helpers/helpers')
 const c = require('./constants')
 const b = require('./helpers/bids')
 const co = require('./helpers/collection')
 const s = require('./helpers/setup')
+const log = require('./helpers/log')
+
 
 async function run() {
   // check all collections
   const collection = await co.getCheckedCollection(c.collectionToRun)
   if (collection.length === 0) {
-    console.log("nothing to bid on")
+    log("nothing to bid on")
     return false
   }
 
   // setup
   const startTime = performance.now()
   const driver = await s.setup()
-  console.log(`Setup took ${h.getTook(startTime)}s`)
+  log(`Setup took ${h.getTook(startTime)}s`)
 
   // run collections
   await runCollection(driver, c.collectionToRun)
@@ -36,12 +39,12 @@ async function runCollection(driver, colName) {
     try {
       await b.placeBid(driver, url, colName, a.id, bid)
     } catch {
-      console.log(`Error: ${a.id}`)
+      log(`Error: ${a.id}`)
       await co.updateCollection(colName, a.id, 'error')
     }
   }
 
-  console.log(`${colName} collection took ${h.getTook(startTime)}s`)
+  log(`${colName} collection took ${h.getTook(startTime)}s`)
 }
 
 run()

@@ -1,0 +1,9 @@
+21:31:35.857 INFO  Starting... 
+21:34:23.167 INFO  Starting... 
+21:36:15.761 INFO  Starting... 
+21:38:22.869 INFO  Setup took 9.202s 
+21:38:23.889 INFO  window check: 1w 
+21:38:28.452 INFO  8659, took: 5.572s, bids present 
+21:38:29.458 INFO  window check: 1w 
+21:38:44.939 INFO  8660, took: 16.486s, bid set: 0.2E, total: 1 bids, 1w 
+21:38:45.945 INFO  window check: 1w 

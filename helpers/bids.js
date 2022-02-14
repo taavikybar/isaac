@@ -2,6 +2,7 @@ const webdriver = require("selenium-webdriver");
 const h = require('./helpers')
 const c = require('../constants')
 const co = require('./collection')
+const log = require('./log')
 const By = webdriver.By
 
 async function placeBid(driver, url, colName, id, bid) {
@@ -13,16 +14,16 @@ async function placeBid(driver, url, colName, id, bid) {
   // close any unnecessary windows
   try {
     windows = await driver.getAllWindowHandles()
-    console.log(`window check: ${windows.length}w`)
+    log(`window check: ${windows.length}w`)
 
     if (windows.length > 1) {
       await driver.switchTo().window(windows[1])
       await driver.close()
       await driver.switchTo().window(windows[0])
-      console.log(`window check after closing: ${windows.length}w`)
+      log(`window check after closing: ${windows.length}w`)
     }
   } catch {
-    console.log(`Initial window closing check error: ${a.id}`)
+    log(`Initial window closing check error: ${a.id}`)
     return false
   }
   await h.sleep(1000)
@@ -34,7 +35,7 @@ async function placeBid(driver, url, colName, id, bid) {
     const is404 = await driver.findElement(By.xpath(`//h1[text()='${c.text404}']`))
     await driver.wait(webdriver.until.elementIsVisible(is404), 1000);
     await co.updateCollection(colName, id, c.update404)
-    console.log(`${id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
+    log(`${id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
     return false
   } catch {
 
@@ -46,7 +47,7 @@ async function placeBid(driver, url, colName, id, bid) {
     await driver.wait(webdriver.until.elementIsVisible(noOffers), 10000);
   } catch {
     await co.updateCollection(colName, id, c.bidPresent)
-    console.log(`${id}, took: ${h.getTook(startTime)}s, ${c.bidPresent}`)
+    log(`${id}, took: ${h.getTook(startTime)}s, ${c.bidPresent}`)
     return false
   }
 
@@ -72,7 +73,7 @@ async function placeBid(driver, url, colName, id, bid) {
       driver.switchTo().window(windows[1])
     }
   } catch {
-    console.log(`Metamask window switch error: ${a.id}`)
+    log(`Metamask window switch error: ${a.id}`)
     return false
   }
   await h.sleep(1000)
@@ -86,7 +87,7 @@ async function placeBid(driver, url, colName, id, bid) {
   await co.updateCollection(colName, id, bid)
   c.bidsMade++
   windows = await driver.getAllWindowHandles()
-  console.log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
+  log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
 }
 
 module.exports = {
