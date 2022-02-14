@@ -58,7 +58,7 @@ async function report() {
     const diff1 = Math.floor((now - new Date(t.earliestBid))/MS_IN_H)
     const diff2 = Math.floor((now - new Date(t.latestBid))/MS_IN_H)
 
-    add(`<tr><td>${colName}</td><td>${t.bids}</td><td>${t.present}</td><td>${t.is404}</td><td>${t.total}</td><td>${assets.length}</td><td>${t.toBid}</td><td>${t.earliestBid}</td><td>${diff1}</td><td>${t.latestBid}</td><td>${diff2}</td></tr>`)
+    add(`<tr><td>${colName}</td><td>${t.bids}</td><td>${t.present}</td><td>${t.is404}</td><td>${t.total}</td><td>${assets.length}</td><td>${t.toBid}</td><td>${t.earliestBid}</td><td class="${diff1>72?'green':'red'}">${diff1}</td><td>${t.latestBid}</td><td class="${diff2>72?'green':'red'}">${diff2}</td></tr>`)
   })
 
   add(`<tr><td></td><td>${tt.bids}</td><td>${tt.present}</td><td>${tt.is404}</td><td>${tt.total}</td><td>${tt.assets}</td><td>${tt.toBid}</td><td></td><td></td><td></td><td></td></tr>`)
