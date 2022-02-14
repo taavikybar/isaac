@@ -44,5 +44,5 @@ module.exports = {
     }
   },
 
-  collectionToRun: 'pixereum',
+  collectionToRun: 'mooncats',
 }
