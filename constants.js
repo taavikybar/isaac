@@ -14,6 +14,8 @@ module.exports = {
   update504: '504',
   offerSubmitted: 'Your offer was submitted successfully!',
   uncertainBid: 'uncertain bid',
+  limitReached: "API Error 400: ['Outstanding order to wallet balance ratio exceeds allowed limit.']",
+  limitInEth: 1460, // per 1 ETH in wallet
 
   bidsMade: 0,
   bidDays: 3,
@@ -27,17 +29,17 @@ module.exports = {
     },
     mooncats: {
       contract: '0xc3f733ca98e0dad0386979eb96fb1722a1a05e69',
-      toBid: 0.22,
+      toBid: 0.25,
       useBid: false,
     },
     cryptocards: {
       contract: '0x3a7dc718eaf31f0a55988161f3d75d7ca785b034',
-      toBid: 0.05,
+      toBid: 0.08,
       useBid: false,
     },
     etherlambos: {
       contract: '0xda9f43015749056182352e9dc6d3ee0b6293d80a',
-      toBid: 0.2,
+      toBid: 0.25,
       useBid: false,
     },
     pixereum: {
@@ -47,5 +49,5 @@ module.exports = {
     }
   },
 
-  collectionsToRun: ['pixereum', 'cryptofighters', 'mooncats'],
+  collectionsToRun: ['etherlambos', 'pixereum', 'cryptofighters', 'mooncats', 'cryptocards'],
 }
