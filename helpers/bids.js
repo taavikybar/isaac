@@ -89,7 +89,7 @@ async function placeBid(driver, url, colName, id, bid) {
   // sign bid
   const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
   await signBtn.click()
-  await h.sleep(3000)
+  // await h.sleep(3000)
 
   // go back to main window
   windows = await driver.getAllWindowHandles()
@@ -107,6 +107,9 @@ async function placeBid(driver, url, colName, id, bid) {
     log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
     return false
   } catch { }
+
+  log(`Bid modal not caught, waiting ${c.minToWait}min`)
+  await h.sleep(c.minToWait*60*1000)
 
   // no confirmation modal caught
   await co.updateCollection(colName, id, c.uncertainBid)
