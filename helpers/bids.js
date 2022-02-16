@@ -108,12 +108,10 @@ async function placeBid(driver, url, colName, id, bid) {
     return false
   } catch { }
 
-  log(`Bid modal not caught, waiting ${c.minToWait}min`)
-  await h.sleep(c.minToWait*60*1000)
-
   // no confirmation modal caught
+  log(`Bid modal not caught, waiting ${c.minToWait}min`)
   await co.updateCollection(colName, id, c.uncertainBid)
-  log(`${id}, took: ${h.getTook(startTime)}s, ${c.uncertainBid}`)
+  await h.sleep(c.minToWait*60*1000)
 }
 
 module.exports = {
