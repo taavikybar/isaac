@@ -5,9 +5,12 @@ const co = require('./collection')
 const log = require('./log')
 const By = webdriver.By
 
-async function placeBid(driver, url, colName, id, bid) {
+async function placeBid(driver, a) {
   const startTime = performance.now()
+  const bid = c.collections[a.colName].toBid
+  const url = co.getUrl(a.colName, a.id)
   let windows = await driver.getAllWindowHandles()
+  
   await driver.switchTo().window(windows[0])
   await h.sleep(1000)
 
@@ -36,8 +39,8 @@ async function placeBid(driver, url, colName, id, bid) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.text404}']`)),
       1000);
 
-    await co.updateCollection(colName, id, c.update404)
-    log(`${id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
+    await co.updateCollection(a.colName, a.id, c.update404)
+    log(`${a.id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
     return false
   } catch { }
 
@@ -47,8 +50,8 @@ async function placeBid(driver, url, colName, id, bid) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.text504}']`)),
       1000);
 
-    await co.updateCollection(colName, id, c.update404)
-    log(`${id}, took: ${h.getTook(startTime)}s, ${c.update504}`)
+    await co.updateCollection(a.colName, a.id, c.update404)
+    log(`${a.id}, took: ${h.getTook(startTime)}s, ${c.update504}`)
     return false
   } catch { }
 
@@ -57,8 +60,8 @@ async function placeBid(driver, url, colName, id, bid) {
     const noOffers = await driver.wait(
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000);
   } catch {
-    await co.updateCollection(colName, id, c.bidPresent)
-    log(`${id}, took: ${h.getTook(startTime)}s, ${c.bidPresent}`)
+    await co.updateCollection(a.colName, a.id, c.bidPresent)
+    log(`${a.id}, took: ${h.getTook(startTime)}s, ${c.bidPresent}`)
     return false
   }
 
@@ -101,17 +104,17 @@ async function placeBid(driver, url, colName, id, bid) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.offerSubmitted}']`)),
       10000);
 
-    await co.updateCollection(colName, id, bid)
+    await co.updateCollection(a.colName, a.id, bid)
     c.bidsMade++
     windows = await driver.getAllWindowHandles()
-    log(`${id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
+    log(`${a.id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
     return false
   } catch { }
 
   // no confirmation modal caught
   log(`Bid modal not caught, waiting ${c.minToWait}min`)
-  await co.updateCollection(colName, id, c.uncertainBid)
   await h.sleep(c.minToWait*60*1000)
+  throw new Error()
 }
 
 module.exports = {

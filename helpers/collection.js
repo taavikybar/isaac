@@ -3,6 +3,8 @@ const fs = require('fs');
 const c = require('../constants')
 const h = require('./helpers')
 
+
+// private
 async function getCollection(colName) {
   const data = await fs.readFileSync(`./assets/${colName}.json`, 'utf8')
   return JSON.parse(data)
@@ -25,6 +27,7 @@ const isAssetValid = asset => {
   return hoursSince > c.bidDays * 24
 }
 
+// public
 const getUrl = (colName, id) => `${c.assetBaseUrl}/${c.collections[colName].contract}/${id}`
 
 async function updateCollection(colName, id, bid) {
@@ -39,9 +42,20 @@ async function updateCollection(colName, id, bid) {
   await fs.writeFileSync(`./assets/${colName}.json`, JSON.stringify(collection))
 }
 
+async function getAssets() {
+  let assets = []
+
+  for (colName of Object.keys(c.collections)) {
+    const checked = await getCheckedCollection(colName)
+    checked.forEach(c => c.colName = colName)
+    assets = [...assets, ...checked]
+  }
+
+  return assets
+}
+
 module.exports = {
-  getCheckedCollection,
-  isAssetValid,
   getUrl,
   updateCollection,
+  getAssets,
 }

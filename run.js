@@ -1,6 +1,5 @@
 require('dotenv').config()
 const { performance } = require('perf_hooks');
-
 const h = require('./helpers/helpers')
 const c = require('./constants')
 const b = require('./helpers/bids')
@@ -10,38 +9,28 @@ const log = require('./helpers/log')
 
 
 async function run() {
-  // setup
   const startTime = performance.now()
   const driver = await s.setup()
   log(`Setup took ${h.getTook(startTime)}s`)
 
-  // run collections
-  for (col of c.collectionsToRun) {
-    await runCollection(driver, col)
-  }
+  runAssets(driver)
 }
 
-async function runCollection(driver, colName) {
-  const startTime = performance.now()
-  const checked = await co.getCheckedCollection(colName)
-  const colConfig = c.collections[colName]
+async function runAssets(driver) {
+  let assets = await co.getAssets()
+  assets = h.shuffleArray(assets)
+  log(`Running all ${assets.length} assets`)
 
-  log(`Running ${colName} with ${checked.length} assets`)
-
-  // run bidding on all checked assets
-  for (a of checked) {
-    const url = co.getUrl(colName, a.id)
-    const bid = colConfig.toBid
-
+  for (a of assets) {
     try {
-      await b.placeBid(driver, url, colName, a.id, bid)
+      await b.placeBid(driver, a)
     } catch (e) {
       log(`Error: ${a.id}, ${e}`)
-      await co.updateCollection(colName, a.id, 'error')
+      break
     }
   }
 
-  log(`${colName} collection took ${h.getTook(startTime)}s`)
+  runAssets(driver)
 }
 
 run()

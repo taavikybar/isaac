@@ -1,5 +1,6 @@
 const fs = require('fs');
 const c = require('../constants')
+const h = require('../helpers/helpers')
 
 const MS_IN_H = 1000 * 60 * 60
 let html = '<html><head><link href="styles.css" rel="stylesheet" type="text/css"></head><body><table><tr><th>Collection</th><th>Active bids</th><th>Expired bids</th><th>Total tried</th><th>Assets</th><th>To bid</th><th>Amount bid</th><th>Earliest bid</th><th>h since</th><th>Latest bid</th><th>h since</th></tr>'
@@ -44,7 +45,7 @@ async function report() {
 
         if (diff <= BID_H) {
           t.active++
-          t.amount = t.amount + Math.floor(bid.bid*1000)
+          t.amount = t.amount + h.round(bid.bid)*1000
         }
         else t.expired++
 
@@ -71,7 +72,9 @@ async function report() {
     add(`<tr><td>${colName}</td><td>${t.active}</td><td>${t.expired}</td><td>${t.total}</td><td>${assets.length}</td><td>${t.toBid}</td><td>${t.amount}E</td><td>${t.earliestBid}</td><td class="${diff1 > BID_H ? 'green' : 'red'}">${diff1}</td><td>${t.latestBid}</td><td class="${diff2 > BID_H ? 'green' : 'red'}">${diff2}</td></tr>`)
   })
 
-  add(`<tr><td></td><td>${tt.active}</td><td>${tt.expired}</td><td>${tt.total}</td><td>${tt.assets}</td><td>${tt.toBid}</td><td>${tt.amount}E<br>(1:${tt.amount/c.ethInWallet})</td><td></td><td></td><td></td><td></td></tr>`)
+  add(`<tr><td>Totals</td><td>${tt.active}</td><td>${tt.expired}</td><td>${tt.total}</td><td>${tt.assets}</td><td>${tt.toBid}</td><td>${h.round(tt.amount)}E</td><td></td><td></td><td></td><td></td></tr>`)
+
+  add(`<tr><td>-</td><td>-</td></tr><tr><td>Max bid amount</td><td>${c.limitInEth*c.ethInWallet}E</td></tr><tr><td>Amount left</td><td>${h.round(c.limitInEth*c.ethInWallet-tt.amount)}E</td></tr>`)
 
   add(`</table></body></html>`)
   await fs.writeFileSync(`./reports/index.html`, html)
