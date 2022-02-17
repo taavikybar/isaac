@@ -47,6 +47,16 @@ module.exports = {
       contract: '0x6f9d53ba6c16fcbe66695e860e72a92581b58aed',
       toBid: 0.028,
       useBid: false,
+    },
+    cryptobots: {
+      contract: '0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643',
+      toBid: 0.05,
+      useBid: false,
+    },
+    deepblack: {
+      contract: '0xd70f41dd5875eee7fa9dd8048567bc932124a8d2',
+      toBid: 0.1,
+      useBid: false,
     }
   },
 }

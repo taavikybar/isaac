@@ -20,8 +20,8 @@ async function addToCollection(collectionName, id) {
 }
 
 const data = []
-for (let i=1;i<=10000;i++) {
+for (let i=1;i<=9000;i++) {
   data.push(i)
 }
 
-addToCollection('pixereum', data)
+addToCollection('deepblack', data)
