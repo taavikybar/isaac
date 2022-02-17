@@ -74,7 +74,7 @@ async function report() {
 
   add(`<tr><td>Totals</td><td>${tt.active}</td><td>${tt.expired}</td><td>${tt.total}</td><td>${tt.assets}</td><td>${tt.toBid}</td><td>${h.round(tt.amount)}E</td><td></td><td></td><td></td><td></td></tr>`)
 
-  add(`<tr><td>-</td><td>-</td></tr><tr><td>Max bid amount</td><td>${c.limitInEth*c.ethInWallet}E</td></tr><tr><td>Amount left</td><td>${h.round(c.limitInEth*c.ethInWallet-tt.amount)}E</td></tr>`)
+  add(`<tr><td>-</td><td>-</td></tr><tr><td>Max bid amount</td><td>${h.round(c.limitInEth*c.ethInWallet)}E</td></tr><tr><td>Amount left</td><td>${h.round(c.limitInEth*c.ethInWallet-tt.amount)}E</td></tr>`)
 
   add(`</table></body></html>`)
   await fs.writeFileSync(`./reports/index.html`, html)
