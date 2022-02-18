@@ -57,8 +57,8 @@ async function report() {
     })
 
     t.amount = t.amount/1000
+    t.toBid = assets.length - t.total + t.expired
 
-    t.toBid = assets.length - t.total
     tt.expired = tt.expired + t.expired
     tt.active = tt.active + t.active
     tt.total = tt.total + t.total
