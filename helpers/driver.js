@@ -3,6 +3,7 @@ const co = require('./collection')
 const log = require('./log')
 const h = require('./helpers')
 const By = webdriver.By
+const NonFatalError = require('./NonFatalError')
 
 async function findErrorElement(driver, a, text, updateText) {
   let found = false
@@ -17,7 +18,7 @@ async function findErrorElement(driver, a, text, updateText) {
   } catch { }
 
   if (found) {
-    throw new Error(updateText)
+    throw new NonFatalError(updateText)
   }
 }
 
@@ -32,7 +33,7 @@ async function closeOtherWindows(driver) {
     }
   }
 
-  switchToWindow(driver, 0)
+  await switchToWindow(driver, 0)
   windows = await driver.getAllWindowHandles()
 
   log(`Close windows: ${beforeCount}-${windows.length}`)
@@ -42,7 +43,7 @@ async function switchToWindow(driver, index) {
   let windows = await driver.getAllWindowHandles()
 
   if (windows.length > index) {
-    driver.switchTo().window(windows[index])
+    await driver.switchTo().window(windows[index])
   }
 
   await h.sleep(1000)

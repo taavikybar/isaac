@@ -11,7 +11,7 @@ async function setup() {
     options.addArguments("profile-directory=Profile 1")
     options.addExtensions(process.env.EXTENSION_PATH)
   
-    let driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build();
+    const driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build();
   
     // start
     driver.navigate().to("https://google.com");

@@ -5,6 +5,7 @@ const co = require('./collection')
 const log = require('./log')
 const d = require('./driver')
 const By = webdriver.By
+const NonFatalError = require('./NonFatalError')
 
 async function placeBid(driver, a) {
   const bid = c.collections[a.colName].toBid
@@ -14,7 +15,7 @@ async function placeBid(driver, a) {
   await d.closeOtherWindows(driver)
 
   await h.sleep(1000)
-  driver.navigate().to(url);
+  await driver.navigate().to(url);
   await h.sleep(3000)
 
   // try if 404/504
@@ -71,7 +72,7 @@ async function placeBid(driver, a) {
   // no confirmation modal caught
   log(`${a.colName}-${a.id}, bid modal not caught, waiting ${c.minToWait}min`)
   await h.sleep(c.minToWait * 60 * 1000)
-  throw new Error()
+  throw new NonFatalError()
 }
 
 module.exports = {
