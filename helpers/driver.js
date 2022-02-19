@@ -35,7 +35,7 @@ async function closeOtherWindows(driver) {
   switchToWindow(driver, 0)
   windows = await driver.getAllWindowHandles()
 
-  log(`Close windows: ${beforeCount}->${windows.length}`)
+  log(`Close windows: ${beforeCount}-${windows.length}`)
 }
 
 async function switchToWindow(driver, index) {

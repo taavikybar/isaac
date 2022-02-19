@@ -16,7 +16,7 @@ module.exports = {
   uncertainBid: 'uncertain bid',
   limitReached: "API Error 400: ['Outstanding order to wallet balance ratio exceeds allowed limit.']",
   limitInEth: 1018, // per 1 ETH in wallet
-  minToWait: 5,
+  minToWait: 0,
 
   bidsMade: 0,
   bidDays: 3,
