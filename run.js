@@ -15,16 +15,28 @@ async function run() {
   const startTime = performance.now()
   await db.loadConfig()
   const driver = await s.setup()
-  
-  log.info(`Setup took ${h.getTook(startTime)}s`)
+  let fatal = false
 
-  runAssets(driver)
+  try {
+    await s.unlockMetamask(driver)
+  } catch (e) {
+    log.info(`Unlock metamask error: ${e}`)
+    fatal = true
+  }
+
+  if (fatal) {
+    await driver.quit()
+    run()
+  } else {
+    log.info(`Setup took ${h.getTook(startTime)}s`)
+    runAssets(driver)
+  }
 }
 
 async function runAssets(driver) {
   let assets = await co.getAssets()
   let fatal = false
-  
+
   assets = h.shuffleArray(assets)
   log.info(`Running all ${assets.length} assets`)
 
