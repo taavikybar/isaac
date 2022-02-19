@@ -48,15 +48,15 @@ module.exports = {
       toBid: 0.04,
       useBid: false,
     },
-    // cryptobots: {
-    //   contract: '0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643',
-    //   toBid: 0.08,
-    //   useBid: false,
-    // },
-    // deepblack: {
-    //   contract: '0xd70f41dd5875eee7fa9dd8048567bc932124a8d2',
-    //   toBid: 0.15,
-    //   useBid: false,
-    // }
+    cryptobots: {
+      contract: '0xf7a6e15dfd5cdd9ef12711bd757a9b6021abf643',
+      toBid: 0.08,
+      useBid: false,
+    },
+    deepblack: {
+      contract: '0xd70f41dd5875eee7fa9dd8048567bc932124a8d2',
+      toBid: 0.15,
+      useBid: false,
+    }
   },
 }
