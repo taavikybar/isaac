@@ -6,12 +6,14 @@ const b = require('./helpers/bids')
 const co = require('./helpers/collection')
 const s = require('./helpers/setup')
 const log = require('./helpers/log');
+const db = require('./helpers/db');
 const { Driver } = require('selenium-webdriver/chrome');
 const NonFatalError = require('./helpers/NonFatalError')
 
 
 async function run() {
   const startTime = performance.now()
+  await db.loadConfig()
   const driver = await s.setup()
   log(`Setup took ${h.getTook(startTime)}s`)
 
