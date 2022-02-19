@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const c = require('../constants')
 const h = require('./helpers')
@@ -8,6 +7,8 @@ const db = require('./db')
 
 // private
 async function isAssetValid(a) {
+  return true
+  log.info(`Checking ${a.colId}-${a.id}`)
   const bids = await db.getBids(a.colId, a.id)
 
   if (bids.length === 0) {
@@ -23,6 +24,7 @@ async function isAssetValid(a) {
 
 // public
 const getUrl = (colId, assetId) => `${c.assetBaseUrl}/${getColById(colId).contract}/${assetId}`
+
 const getColById = id => c.collections.find(col => col.id === id)
 
 async function updateCollection(colId, assetId, bid) {

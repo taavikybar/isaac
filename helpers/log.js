@@ -14,7 +14,9 @@ module.exports = {
     logConsole.info(text)
   },
   error: text => {
-    logFile.error(text)
-    logConsole.error(text)
+    try {
+      logFile.error(text)
+      logConsole.error(text)
+    } catch { }
   }
 }
