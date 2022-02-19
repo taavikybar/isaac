@@ -1,10 +1,10 @@
 require('dotenv').config()
 let c = require('../constants')
 const log = require('./log');
+const DB_URL = `http://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}`
 
 async function loadConfig() {
   try {
-    const DB_URL = `http://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}`
     const nano = require('nano')(DB_URL);
     const config = await nano.use('config')
     const global = await config.get('global')
@@ -21,6 +21,23 @@ async function loadConfig() {
   }
 }
 
+async function addBid(data) {
+  try {
+    const nano = require('nano')(DB_URL);
+    const table = await nano.use('bids')
+
+    await table.insert(data)
+  } catch (e) {
+    log(`DB bid add error: ${e}`)
+  }
+}
+
+async function getAsset(colId, assetId) {
+
+}
+
 module.exports = {
   loadConfig,
+  addBid,
+  getAsset,
 }

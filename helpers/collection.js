@@ -3,16 +3,17 @@ const fs = require('fs');
 const c = require('../constants')
 const h = require('./helpers')
 const log = require('./log')
+const db = require('./db')
 
 
 // private
-async function getCollection(colName) {
-  const data = await fs.readFileSync(`./assets/${colName}.json`, 'utf8')
+async function getCollection(colId) {
+  const data = await fs.readFileSync(`./assets/${colId}.json`, 'utf8')
   return JSON.parse(data)
 }
 
-async function getCheckedCollection(colName) {
-  const collection = await getCollection(colName)
+async function getCheckedCollection(colId) {
+  const collection = await getCollection(colId)
   return collection.filter(isAssetValid)
 }
 
@@ -29,19 +30,29 @@ const isAssetValid = asset => {
 }
 
 // public
-const getUrl = (colName, id) => `${c.assetBaseUrl}/${getColById(colName).contract}/${id}`
+const getUrl = (colId, assetId) => `${c.assetBaseUrl}/${getColById(colId).contract}/${assetId}`
 const getColById = id => c.collections.find(col => col.id === id)
 
-async function updateCollection(colName, id, bid) {
-  const collection = await getCollection(colName)
-  const index = collection.findIndex(a => a.id === id)
+async function updateCollection(colId, assetId, bid) {
+  const collection = await getCollection(colId)
+  const index = collection.findIndex(a => a.id === assetId)
 
   collection[index].bids.push({
     date: new Date(),
     bid,
   })
 
-  await fs.writeFileSync(`./assets/${colName}.json`, JSON.stringify(collection))
+  const data = {
+    date: new Date(),
+    collectionId: a.colId,
+    assetId: a.id,
+    bid,
+    worker: process.env.ID,
+  }
+  
+  db.addBid(data)
+
+  await fs.writeFileSync(`./assets/${colId}.json`, JSON.stringify(collection))
 }
 
 async function getAssets() {
@@ -50,7 +61,7 @@ async function getAssets() {
 
   for (col of collections) {
     const checked = await getCheckedCollection(col.id)
-    checked.forEach(c => c.colName = col.id)
+    checked.forEach(a => a.colId = col.id)
     assets = [...assets, ...checked]
   }
 

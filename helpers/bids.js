@@ -8,8 +8,8 @@ const log = require('./log')
 const d = require('./driver')
 
 async function placeBid(driver, a) {
-  const bid = co.getColById(a.colName).toBid
-  const url = co.getUrl(a.colName, a.id)
+  const bid = co.getColById(a.colId).toBid
+  const url = co.getUrl(a.colId, a.id)
 
   await d.switchToWindow(driver, 0)
   await d.closeOtherWindows(driver)
@@ -27,8 +27,8 @@ async function placeBid(driver, a) {
     const noOffers = await driver.wait(
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000);
   } catch {
-    await co.updateCollection(a.colName, a.id, c.bidPresent)
-    log(`${a.colName}-${a.id}, ${c.bidPresent}`)
+    await co.updateCollection(a.colId, a.id, c.bidPresent)
+    log(`${a.colId}-${a.id}, ${c.bidPresent}`)
     return false
   }
 
@@ -63,14 +63,14 @@ async function placeBid(driver, a) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.offerSubmitted}']`)),
       10000);
 
-    await co.updateCollection(a.colName, a.id, bid)
+    await co.updateCollection(a.colId, a.id, bid)
     c.bidsMade++
-    log(`${a.colName}-${a.id}, bid set: ${bid}E, total: ${c.bidsMade} bids`)
+    log(`${a.colId}-${a.id}, bid set: ${bid}E, total: ${c.bidsMade} bids`)
     return false
   } catch { }
 
   // no confirmation modal caught
-  log(`${a.colName}-${a.id}, bid modal not caught, waiting ${c.minToWait}min`)
+  log(`${a.colId}-${a.id}, bid modal not caught, waiting ${c.minToWait}min`)
   await h.sleep(c.minToWait * 60 * 1000)
   throw new NonFatalError()
 }

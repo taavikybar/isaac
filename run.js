@@ -34,7 +34,7 @@ async function runAssets(driver) {
       await b.placeBid(driver, a)
     } catch (e) {
       if (e instanceof NonFatalError) {
-        log(`Non-fatal error ${a.colName}-${a.id}, ${e}`)
+        log(`Non-fatal error ${a.colId}-${a.id}, ${e}`)
       } else {
         log(`Fatal error, ${e}`)
         fatal = true

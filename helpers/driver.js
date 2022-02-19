@@ -13,7 +13,7 @@ async function findErrorElement(driver, a, text, updateText) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${text}']`)),
       1000);
 
-    await co.updateCollection(a.colName, a.id, updateText)
+    await co.updateCollection(a.colId, a.id, updateText)
     found = true
   } catch { }
 
