@@ -15,6 +15,7 @@ async function run() {
   const startTime = performance.now()
   await db.loadConfig()
   const driver = await s.setup()
+  
   log(`Setup took ${h.getTook(startTime)}s`)
 
   runAssets(driver)

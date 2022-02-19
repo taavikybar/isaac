@@ -1,6 +1,9 @@
 const fs = require('fs');
 const c = require('../constants')
 const h = require('../helpers/helpers')
+const db = require('../helpers/db');
+const log = require('../helpers/log');
+const clean = require('./clean');
 
 const MS_IN_H = 1000 * 60 * 60
 let html = '<html><head><link href="styles.css" rel="stylesheet" type="text/css"></head><body><table><tr><th>Collection</th><th>Active bids</th><th>Expired bids</th><th>Total tried</th><th>Assets</th><th>To bid</th><th>Amount bid</th><th>Earliest bid</th><th>h since</th><th>Latest bid</th><th>h since</th></tr>'
@@ -20,8 +23,11 @@ const tt = {
 }
 
 async function report() {
-  await Object.keys(c.collections).forEach(async colName => {
-    const file = await fs.readFileSync(`./assets/${colName}.json`, 'utf8')
+  await clean()
+  await db.loadConfig()
+
+  for (col of c.collections) {
+    const file = await fs.readFileSync(`./assets/${col.id}.json`, 'utf8')
     const assets = JSON.parse(file)
     const now = new Date()
     const t = {
@@ -69,8 +75,8 @@ async function report() {
     const diff1 = Math.floor((now - new Date(t.earliestBid)) / MS_IN_H)
     const diff2 = Math.floor((now - new Date(t.latestBid)) / MS_IN_H)
 
-    add(`<tr><td>${colName}</td><td>${t.active}</td><td>${t.expired}</td><td>${t.total}</td><td>${assets.length}</td><td>${t.toBid}</td><td>${t.amount}E</td><td>${t.earliestBid}</td><td class="${diff1 > BID_H ? 'green' : 'red'}">${diff1}</td><td>${t.latestBid}</td><td class="${diff2 > BID_H ? 'green' : 'red'}">${diff2}</td></tr>`)
-  })
+    add(`<tr><td>${col.id}</td><td>${t.active}</td><td>${t.expired}</td><td>${t.total}</td><td>${assets.length}</td><td>${t.toBid}</td><td>${t.amount}E</td><td>${t.earliestBid}</td><td class="${diff1 > BID_H ? 'green' : 'red'}">${diff1}</td><td>${t.latestBid}</td><td class="${diff2 > BID_H ? 'green' : 'red'}">${diff2}</td></tr>`)
+  }
 
   add(`<tr><td>Totals</td><td>${tt.active}</td><td>${tt.expired}</td><td>${tt.total}</td><td>${tt.assets}</td><td>${tt.toBid}</td><td>${h.round(tt.amount)}E</td><td></td><td></td><td></td><td></td></tr>`)
 
@@ -78,6 +84,8 @@ async function report() {
 
   add(`</table></body></html>`)
   await fs.writeFileSync(`./reports/index.html`, html)
+
+  log('Report generated')
 }
 
 

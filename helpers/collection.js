@@ -2,6 +2,7 @@
 const fs = require('fs');
 const c = require('../constants')
 const h = require('./helpers')
+const log = require('./log')
 
 
 // private
@@ -28,7 +29,8 @@ const isAssetValid = asset => {
 }
 
 // public
-const getUrl = (colName, id) => `${c.assetBaseUrl}/${c.collections[colName].contract}/${id}`
+const getUrl = (colName, id) => `${c.assetBaseUrl}/${getColById(colName).contract}/${id}`
+const getColById = id => c.collections.find(col => col.id === id)
 
 async function updateCollection(colName, id, bid) {
   const collection = await getCollection(colName)
@@ -44,10 +46,11 @@ async function updateCollection(colName, id, bid) {
 
 async function getAssets() {
   let assets = []
+  const collections = c.collections.filter(c => c.worker === process.env.ID)
 
-  for (colName of Object.keys(c.collections)) {
-    const checked = await getCheckedCollection(colName)
-    checked.forEach(c => c.colName = colName)
+  for (col of collections) {
+    const checked = await getCheckedCollection(col.id)
+    checked.forEach(c => c.colName = col.id)
     assets = [...assets, ...checked]
   }
 
@@ -58,4 +61,5 @@ module.exports = {
   getUrl,
   updateCollection,
   getAssets,
+  getColById,
 }

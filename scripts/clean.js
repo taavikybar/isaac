@@ -1,10 +1,14 @@
 const fs = require('fs');
 const c = require('../constants')
+const db = require('../helpers/db');
+const log = require('../helpers/log');
 
 
 async function clean() {
-  await Object.keys(c.collections).forEach(async colName => {
-    const file = await fs.readFileSync(`./assets/${colName}.json`, 'utf8')
+  await db.loadConfig()
+
+  for (col of c.collections) {
+    const file = await fs.readFileSync(`./assets/${col.id}.json`, 'utf8')
     const assets = JSON.parse(file)
     const newAssets = []
 
@@ -14,11 +18,10 @@ async function clean() {
       }
     })
 
-    console.log(`\n${colName}`)
-    console.log(`assets: ${assets.length}, cleaned assets: ${newAssets.length}, 404 found: ${assets.length - newAssets.length}`)
+    log(`${col.id}: assets: ${assets.length}, cleaned assets: ${newAssets.length}, 404 found: ${assets.length - newAssets.length}`)
 
-    await fs.writeFileSync(`./assets/${colName}.json`, JSON.stringify(newAssets))
-  })
+    await fs.writeFileSync(`./assets/${col.id}.json`, JSON.stringify(newAssets))
+  }
 }
 
-clean()
+module.exports = clean

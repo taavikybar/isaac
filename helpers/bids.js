@@ -1,14 +1,14 @@
 const webdriver = require("selenium-webdriver");
+const By = webdriver.By
+const NonFatalError = require('./NonFatalError')
 const h = require('./helpers')
 const c = require('../constants')
 const co = require('./collection')
 const log = require('./log')
 const d = require('./driver')
-const By = webdriver.By
-const NonFatalError = require('./NonFatalError')
 
 async function placeBid(driver, a) {
-  const bid = c.collections[a.colName].toBid
+  const bid = co.getColById(a.colName).toBid
   const url = co.getUrl(a.colName, a.id)
 
   await d.switchToWindow(driver, 0)
