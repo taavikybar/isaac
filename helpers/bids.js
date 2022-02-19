@@ -40,7 +40,7 @@ async function placeBid(driver, a) {
       1000);
 
     await co.updateCollection(a.colName, a.id, c.update404)
-    log(`${a.id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
+    log(`${a.colName}-${a.id}, took: ${h.getTook(startTime)}s, ${c.update404}`)
     return false
   } catch { }
 
@@ -61,7 +61,7 @@ async function placeBid(driver, a) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000);
   } catch {
     await co.updateCollection(a.colName, a.id, c.bidPresent)
-    log(`${a.id}, took: ${h.getTook(startTime)}s, ${c.bidPresent}`)
+    log(`${a.colName}-${a.id}, took: ${h.getTook(startTime)}s, ${c.bidPresent}`)
     return false
   }
 
@@ -107,12 +107,12 @@ async function placeBid(driver, a) {
     await co.updateCollection(a.colName, a.id, bid)
     c.bidsMade++
     windows = await driver.getAllWindowHandles()
-    log(`${a.id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
+    log(`${a.colName}-${a.id}, took: ${h.getTook(startTime)}s, bid set: ${bid}E, total: ${c.bidsMade} bids, ${windows.length}w`)
     return false
   } catch { }
 
   // no confirmation modal caught
-  log(`Bid modal not caught, waiting ${c.minToWait}min`)
+  log(`${a.colName}-${a.id}, bid modal not caught, waiting ${c.minToWait}min`)
   await h.sleep(c.minToWait*60*1000)
   throw new Error()
 }
