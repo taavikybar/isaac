@@ -25,7 +25,7 @@ async function runAssets(driver) {
     try {
       await b.placeBid(driver, a)
     } catch (e) {
-      log(`Error: ${a.id}, ${e}`)
+      log(`${a.colName}-${a.id}, ${e}`)
       break
     }
   }
