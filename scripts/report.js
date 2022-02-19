@@ -85,7 +85,7 @@ async function report() {
   add(`</table></body></html>`)
   await fs.writeFileSync(`./reports/index.html`, html)
 
-  log('Report generated')
+  log.info('Report generated')
 }
 
 

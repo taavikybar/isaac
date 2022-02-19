@@ -15,9 +15,9 @@ async function loadConfig() {
     })
 
     c.collections = assets.collections
-    log('Config loaded')
+    log.info('Config loaded')
   } catch (e) {
-    log(`DB config load error: ${e}`)
+    log.info(`DB config load error: ${e}`)
   }
 }
 
@@ -28,7 +28,7 @@ async function addBid(data) {
 
     await table.insert(data)
   } catch (e) {
-    log(`DB bid add error: ${e}`)
+    log.info(`DB bid add error: ${e}`)
   }
 }
 

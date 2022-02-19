@@ -18,7 +18,7 @@ async function clean() {
       }
     })
 
-    log(`${col.id}: assets: ${assets.length}, cleaned assets: ${newAssets.length}, 404 found: ${assets.length - newAssets.length}`)
+    log.info(`${col.id}: assets: ${assets.length}, cleaned assets: ${newAssets.length}, 404 found: ${assets.length - newAssets.length}`)
 
     await fs.writeFileSync(`./assets/${col.id}.json`, JSON.stringify(newAssets))
   }

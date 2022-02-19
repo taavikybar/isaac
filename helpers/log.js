@@ -8,7 +8,13 @@ const opts = {
 const logFile = require('simple-node-logger').createRollingFileLogger(opts);
 const logConsole = require('simple-node-logger').createSimpleLogger();
 
-module.exports = text => {
-  logFile.info(text)
-  logConsole.info(text)
+module.exports = {
+  info: text => {
+    logFile.info(text)
+    logConsole.info(text)
+  },
+  error: text => {
+    logFile.error(text)
+    logConsole.error(text)
+  }
 }

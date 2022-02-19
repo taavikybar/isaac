@@ -16,7 +16,7 @@ async function run() {
   await db.loadConfig()
   const driver = await s.setup()
   
-  log(`Setup took ${h.getTook(startTime)}s`)
+  log.info(`Setup took ${h.getTook(startTime)}s`)
 
   runAssets(driver)
 }
@@ -26,17 +26,16 @@ async function runAssets(driver) {
   let fatal = false
   
   assets = h.shuffleArray(assets)
-
-  log(`Running all ${assets.length} assets`)
+  log.info(`Running all ${assets.length} assets`)
 
   for (a of assets) {
     try {
       await b.placeBid(driver, a)
     } catch (e) {
       if (e instanceof NonFatalError) {
-        log(`Non-fatal error ${a.colId}-${a.id}, ${e}`)
+        log.error(`Non-fatal error ${a.colId}-${a.id}, ${e}`)
       } else {
-        log(`Fatal error, ${e}`)
+        log.error(`Fatal error, ${e}`)
         fatal = true
       }
 
