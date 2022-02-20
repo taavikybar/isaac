@@ -4,22 +4,21 @@ const h = require('./helpers')
 const log = require('./log')
 const db = require('./db')
 
+const MS_IN_H = 1000 * 60 * 60
+const H_IN_DAY = 24
 
 // private
 async function isAssetValid(a) {
-  return true
-  log.info(`Checking ${a.colId}-${a.id}`)
-  const bids = await db.getBids(a.colId, a.id)
-
-  if (bids.length === 0) {
+  if (a.lastBidDate === null) {
     return true
   }
 
-  const MS_IN_H = 1000 * 60 * 60;
-  const lastBid = bids[bids.length - 1].date
-  const hoursSince = Math.floor((new Date() - new Date(lastBid)) / MS_IN_H)
+  const hoursSince = Math.floor(
+    (new Date() - new Date(a.lastBidDate))
+    / MS_IN_H
+  )
 
-  return hoursSince > c.bidDays * 24
+  return hoursSince > c.bidDays * H_IN_DAY
 }
 
 // public

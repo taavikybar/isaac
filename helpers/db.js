@@ -27,7 +27,7 @@ async function updateCollection(colId, assetId, bid) {
   try {
     const nano = require('nano')(DB_URL);
     const table = await nano.use(ASSETS_TABLE)
-    const colData = await nano.get(colId)
+    const colData = await table.get(colId)
 
     for (const a of colData.assets) {
       if (a.id === assetId) {
@@ -39,7 +39,7 @@ async function updateCollection(colId, assetId, bid) {
       }
     }
 
-    await table.destroy(colData.id, colData._rev)
+    await table.destroy(colData._id, colData._rev)
     await table.insert({
       assets: colData.assets
     }, colId)
@@ -70,14 +70,13 @@ async function getAssets(colId) {
   try {
     const nano = require('nano')(DB_URL);
     const table = await nano.use(ASSETS_TABLE)
-    const ids = await table.get(colId)
+    const colData = await table.get(colId)
 
-    return ids.ids.map(id => {
-      return {
-        id,
-        colId,
-      }
+    colData.assets.forEach(a => {
+      a.colId = colId
     })
+
+    return colData.assets
   } catch (e) {
     log.info(`DB getAsset error: ${e}`)
   }
