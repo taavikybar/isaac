@@ -23,14 +23,28 @@ async function loadConfig() {
   }
 }
 
-async function addBid(data) {
+async function updateCollection(colId, assetId, bid) {
   try {
     const nano = require('nano')(DB_URL);
-    const table = await nano.use(BIDS_TABLE)
+    const table = await nano.use(ASSETS_TABLE)
+    const colData = await nano.get(colId)
 
-    await table.insert(data)
+    for (const a of colData.assets) {
+      if (a.id === assetId) {
+        a.lastBidDate = new Date()
+        a.lastBid = bid
+        a.worker = process.env.ID
+
+        break
+      }
+    }
+
+    await table.destroy(colData.id, colData._rev)
+    await table.insert({
+      assets: colData.assets
+    }, colId)
   } catch (e) {
-    log.info(`DB addBid error: ${e}`)
+    log.info(`DB updateCollection error: ${e}`)
   }
 }
 
@@ -72,7 +86,7 @@ async function getAssets(colId) {
 
 module.exports = {
   loadConfig,
-  addBid,
+  updateCollection,
   getBids,
   getAssets,
 }

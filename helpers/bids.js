@@ -4,6 +4,7 @@ const NonFatalError = require('./NonFatalError')
 const h = require('./helpers')
 const c = require('../constants')
 const co = require('./collection')
+const db = require('./db')
 const log = require('./log')
 const d = require('./driver')
 
@@ -27,7 +28,7 @@ async function placeBid(driver, a) {
     const noOffers = await driver.wait(
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000);
   } catch {
-    await co.updateCollection(a.colId, a.id, c.bidPresent)
+    await db.updateCollection(a.colId, a.id, c.bidPresent)
     log.info(`${a.colId}-${a.id}, ${c.bidPresent}`)
     return false
   }
@@ -63,7 +64,7 @@ async function placeBid(driver, a) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.offerSubmitted}']`)),
       10000);
 
-    await co.updateCollection(a.colId, a.id, bid)
+    await db.updateCollection(a.colId, a.id, bid)
     c.bidsMade++
     log.info(`${a.colId}-${a.id}, bid set: ${bid}E, total: ${c.bidsMade} bids`)
     return false

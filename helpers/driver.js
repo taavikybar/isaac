@@ -2,6 +2,7 @@ const webdriver = require("selenium-webdriver");
 const co = require('./collection')
 const log = require('./log')
 const h = require('./helpers')
+const db = require('./db')
 const By = webdriver.By
 const NonFatalError = require('./NonFatalError')
 
@@ -13,7 +14,7 @@ async function findErrorElement(driver, a, text, updateText) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${text}']`)),
       1000);
 
-    await co.updateCollection(a.colId, a.id, updateText)
+    await db.updateCollection(a.colId, a.id, updateText)
     found = true
   } catch { }
 

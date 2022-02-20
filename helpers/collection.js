@@ -27,16 +27,6 @@ const getUrl = (colId, assetId) => `${c.assetBaseUrl}/${getColById(colId).contra
 
 const getColById = id => c.collections.find(col => col.id === id)
 
-async function updateCollection(colId, assetId, bid) {
-  await db.addBid({
-    date: new Date(),
-    collectionId: a.colId,
-    assetId: a.id,
-    bid,
-    worker: process.env.ID,
-  })
-}
-
 async function getAssets() {
   let assets = []
   const collections = c.collections.filter(c => c.worker === process.env.ID)
@@ -59,7 +49,6 @@ async function getAssets() {
 
 module.exports = {
   getUrl,
-  updateCollection,
   getAssets,
   getColById,
 }
