@@ -34,6 +34,7 @@ async function updateCollection(colId, assetId, bid) {
         a.lastBidDate = new Date()
         a.lastBid = bid
         a.worker = process.env.ID
+        a.account = process.env.ACCOUNT
 
         break
       }

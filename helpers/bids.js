@@ -34,7 +34,6 @@ async function placeBid(driver, a) {
   }
 
   // open bid modal
-  await h.sleep(1000)
   const offerBtn = await driver.findElement(By.xpath(`//button[text()='${c.offerButtonTxt}']`))
   await offerBtn.click()
 

@@ -8,7 +8,7 @@ async function setup() {
   const options = new chrome.Options();
 
   options.addArguments(`user-data-dir=${process.env.USER_DATA_PATH}`)
-  options.addArguments("profile-directory=Profile 1")
+  options.addArguments(`profile-directory=Profile ${process.env.CHROME_PROFILE}`)
   options.addExtensions(process.env.EXTENSION_PATH)
 
   const driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build();
