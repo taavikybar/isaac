@@ -42,7 +42,8 @@ async function updateCollection(colId, assetId, bid) {
 
     await table.destroy(colData._id, colData._rev)
     await table.insert({
-      assets: colData.assets
+      assets: colData.assets,
+      lastClean: colData.lastClean,
     }, colId)
   } catch (e) {
     log.info(`DB updateCollection error: ${e}`)
