@@ -19,9 +19,10 @@ async function placeBid(driver, a) {
   await driver.navigate().to(url);
   await h.sleep(3000)
 
-  // try if 404/504
+  // try if 404/504 or owned by NullAddress
   await d.findErrorElement(driver, a, c.text404, c.update404)
   await d.findErrorElement(driver, a, c.text504, c.update504)
+  await d.findErrorElement(driver, a, c.nullAddress, c.nullAddress)
 
   // check if offers present
   try {
