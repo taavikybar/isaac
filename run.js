@@ -13,7 +13,6 @@ const NonFatalError = require('./helpers/NonFatalError')
 
 async function run() {
   const startTime = performance.now()
-  await db.loadConfig()
   const driver = await s.setup()
   let fatal = false
 
@@ -34,6 +33,7 @@ async function run() {
 }
 
 async function runAssets(driver) {
+  await db.loadConfig()
   let assets = await co.getAssets()
   let fatal = false
 
