@@ -11,7 +11,7 @@ async function findErrorElement(driver, a, text, updateText) {
 
   try {
     await driver.wait(
-      webdriver.until.elementLocated(By.xpath(`//*[text()='${text}']`)),
+      webdriver.until.elementLocated(By.xpath(`/*[.,'${text}']`)),
       1000);
 
     await db.updateCollection(a.colId, a.id, updateText)
@@ -20,6 +20,23 @@ async function findErrorElement(driver, a, text, updateText) {
 
   if (found) {
     throw new NonFatalError(updateText)
+  }
+}
+
+async function findNullOwnerElement(driver, a) {
+  let found = false
+
+  try {
+    await driver.wait(
+      webdriver.until.elementLocated(By.xpath(`//*[contains(text(),"Owned by")]/a[.//*[contains(text(),"NullAddress")]]`)),
+      1000);
+
+    await db.updateCollection(a.colId, a.id, 'NullAddress')
+    found = true
+  } catch { }
+
+  if (found) {
+    throw new NonFatalError('NullAddress')
   }
 }
 
@@ -54,4 +71,5 @@ module.exports = {
   findErrorElement,
   closeOtherWindows,
   switchToWindow,
+  findNullOwnerElement,
 }
