@@ -11,7 +11,7 @@ async function findErrorElement(driver, a, text, updateText) {
 
   try {
     await driver.wait(
-      webdriver.until.elementLocated(By.xpath(`/*[.,'${text}']`)),
+      webdriver.until.elementLocated(By.xpath(`//*[text()='${text}']`)),
       1000);
 
     await db.updateCollection(a.colId, a.id, updateText)
