@@ -19,7 +19,7 @@ async function run() {
   try {
     await s.unlockMetamask(driver)
   } catch (e) {
-    log.info(`Unlock metamask error: ${e}`)
+    log(`Unlock metamask error: ${e}`)
     fatal = true
   }
 
@@ -27,7 +27,7 @@ async function run() {
     await driver.quit()
     run()
   } else {
-    log.info(`Setup took ${h.getTook(startTime)}s`)
+    log(`Setup took ${h.getTook(startTime)}s`)
     runAssets(driver)
   }
 }
@@ -38,16 +38,16 @@ async function runAssets(driver) {
   let fatal = false
 
   assets = h.shuffleArray(assets)
-  log.info(`Running all ${assets.length} assets`)
+  log(`Running all ${assets.length} assets`)
 
   for (a of assets) {
     try {
       await b.placeBid(driver, a)
     } catch (e) {
       if (e instanceof NonFatalError) {
-        log.info(`Non-fatal error ${a.colId}-${a.id}, ${e}`)
+        log(`Non-fatal error ${a.colId}-${a.id}, ${e}`)
       } else {
-        log.info(`Fatal error, ${e}`)
+        log(`Fatal error, ${e}`)
         fatal = true
       }
 

@@ -28,10 +28,12 @@ const getColById = id => c.collections.find(col => col.id === id)
 
 async function getAssets() {
   let assets = []
-  const collections = c.collections.filter(c => c.worker === process.env.ID)
+  const colIds = c.collections.filter(c => c.worker === process.env.ID).map(c => c.id)
 
-  for (col of collections) {
-    const allAssets = await db.getAssets(col.id)
+  log(`Running on collections: ${colIds}`)
+
+  for (colId of colIds) {
+    const allAssets = await db.getAssets(colId)
     const checked = []
 
     for (a of allAssets) {

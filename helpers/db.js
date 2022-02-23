@@ -17,9 +17,9 @@ async function loadConfig() {
     })
 
     c.collections = collections.collections
-    log.info('Config loaded')
+    log('Config loaded')
   } catch (e) {
-    log.info(`DB loadConfig error: ${e}`)
+    log(`DB loadConfig error: ${e}`)
   }
 }
 
@@ -46,7 +46,7 @@ async function updateCollection(colId, assetId, bid) {
       assets: colData.assets,
     }, colId)
   } catch (e) {
-    log.info(`DB updateCollection error: ${e}`)
+    log(`DB updateCollection error: ${e}`)
   }
 }
 
@@ -64,7 +64,7 @@ async function getBids(colId, assetId) {
 
     return docs.docs
   } catch (e) {
-    log.info(`DB getBids error: ${e}`)
+    log(`DB getBids error: ${e}`)
   }
 }
 
@@ -80,7 +80,7 @@ async function getAssets(colId) {
 
     return colData.assets
   } catch (e) {
-    log.info(`DB getAsset error: ${e}`)
+    log(`DB getAsset error: ${e}`)
   }
 }
 

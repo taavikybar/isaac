@@ -30,7 +30,7 @@ async function placeBid(driver, a) {
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000);
   } catch {
     await db.updateCollection(a.colId, a.id, c.bidPresent)
-    log.info(`${a.colId}-${a.id}, ${c.bidPresent}`)
+    log(`${a.colId}-${a.id}, ${c.bidPresent}`)
     return false
   }
 
@@ -66,12 +66,12 @@ async function placeBid(driver, a) {
 
     await db.updateCollection(a.colId, a.id, bid)
     c.bidsMade++
-    log.info(`${a.colId}-${a.id}, bid set: ${bid}E, total: ${c.bidsMade} bids`)
+    log(`${a.colId}-${a.id}, bid set: ${bid}E, total: ${c.bidsMade} bids`)
     return false
   } catch { }
 
   // no confirmation modal caught
-  log.info(`${a.colId}-${a.id}, bid modal not caught, waiting ${c.minToWait}min`)
+  log(`${a.colId}-${a.id}, bid modal not caught, waiting ${c.minToWait}min`)
   await h.sleep(c.minToWait * 60 * 1000)
   throw new NonFatalError()
 }
