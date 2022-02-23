@@ -17,7 +17,7 @@ async function placeBid(driver, a) {
 
   await h.sleep(1000)
   await driver.navigate().to(url);
-  await h.sleep(2000)
+  await h.sleep(1000)
 
   // try if 404/504 or owned by NullAddress
   await d.findErrorElement(driver, a, c.text404, c.update404)
@@ -37,6 +37,13 @@ async function placeBid(driver, a) {
   // open bid modal
   const offerBtn = await driver.findElement(By.xpath(`//button[text()='${c.offerButtonTxt}']`))
   await offerBtn.click()
+
+  // look for Accept Terms button
+  try {
+    const agreeTerms = await driver.wait(webdriver.until.elementLocated(By.xpath(`//input[@id='review-confirmation']`)), 1000);
+
+    await agreeTerms.click()
+  } catch {}
 
   // enter bid
   const offerInput = await driver.findElement(By.xpath(`//input[@placeholder='${c.inputPlaceholder}']`))
