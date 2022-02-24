@@ -54,7 +54,7 @@ async function placeBid(driver, a) {
   await offerBtn2.click()
 
   // switch to metamask popup
-  await h.sleep(5000)
+  await h.sleep(7000)
   await d.switchToWindow(driver, 1)
 
   // sign bid
