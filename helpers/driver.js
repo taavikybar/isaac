@@ -1,9 +1,10 @@
 const webdriver = require("selenium-webdriver");
+const By = webdriver.By
 const co = require('./collection')
 const log = require('./log')
 const h = require('./helpers')
 const db = require('./db')
-const By = webdriver.By
+const c = require('../constants')
 const NonFatalError = require('./NonFatalError')
 
 async function findErrorElement(driver, a, text, updateText) {
@@ -31,12 +32,12 @@ async function findNullOwnerElement(driver, a) {
       webdriver.until.elementLocated(By.xpath(`//*[contains(text(),"Owned by")]/a[.//*[contains(text(),"NullAddress")]]`)),
       1000);
 
-    await db.updateCollection(a.colId, a.id, 'NullAddress')
+    await db.updateCollection(a.colId, a.id, c.nullAddress)
     found = true
   } catch { }
 
   if (found) {
-    throw new NonFatalError('NullAddress')
+    throw new NonFatalError(c.nullAddress)
   }
 }
 

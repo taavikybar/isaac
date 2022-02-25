@@ -57,6 +57,18 @@ async function placeBid(driver, a) {
   await h.sleep(7000)
   await d.switchToWindow(driver, 1)
 
+  // check if permissions to access modal has appeared
+  try {
+    await driver.wait(webdriver.until.elementLocated(
+      By.xpath(`//*[contains(text(),'${c.permissionModalText}')]`)), 1000);
+
+    const rejectBtn = await driver.findElement(
+      By.xpath(`//button[text()='${c.rejectButtonText}']`))
+
+    await rejectBtn.click()
+    await d.switchToWindow(driver, 1)
+  } catch {}
+
   // sign bid
   const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
   await signBtn.click()
