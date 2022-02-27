@@ -13,6 +13,10 @@ async function isAssetValid(a) {
     return true
   }
 
+  if (c.runOnlyUntouched) {
+    return false
+  }
+
   const hoursSince = Math.floor(
     (new Date() - new Date(a.lastBidDate))
     / MS_IN_H
