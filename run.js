@@ -58,8 +58,11 @@ async function runAssets(driver) {
   if (fatal) {
     await driver.quit()
     run()
-  } else {
+  } else if (assets.length > 0) {
     runAssets(driver)
+  } else {
+    log('No assets to run')
+    await driver.quit()
   }
 }
 

@@ -22,6 +22,7 @@ async function placeBid(driver, a) {
   // try if 404/504 or owned by NullAddress
   await d.findErrorElement(driver, a, c.text404, c.update404)
   await d.findErrorElement(driver, a, c.text504, c.update504)
+  await d.findErrorElement(driver, a, c.reportedText, c.reported)
   await d.findNullOwnerElement(driver, a)
 
   // check if offers present
