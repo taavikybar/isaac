@@ -43,7 +43,6 @@ async function findNullOwnerElement(driver, a) {
 
 async function closeOtherWindows(driver) {
   let windows = await driver.getAllWindowHandles()
-  const beforeCount = windows.length
 
   if (windows.length > 1) {
     for (w of windows) {
@@ -53,9 +52,6 @@ async function closeOtherWindows(driver) {
   }
 
   await switchToWindow(driver, 0)
-  windows = await driver.getAllWindowHandles()
-
-  log(`Close windows: ${beforeCount}-${windows.length}`)
 }
 
 async function switchToWindow(driver, index) {

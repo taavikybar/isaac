@@ -36,13 +36,26 @@ async function runAssets(driver) {
   await db.loadConfig()
   let assets = await co.getAssets()
   let fatal = false
+  let assetsRun = 0
 
   assets = h.shuffleArray(assets)
+
+  if (assets.length === 0) {
+    log('No assets to run')
+    await driver.quit()
+    return false
+  }
+
   log(`Running all ${assets.length} assets`)
 
   for (a of assets) {
     try {
       await b.placeBid(driver, a)
+      assetsRun++
+
+      if (assetsRun === c.assetsToRunBeforeUpdate) {
+        throw new NonFatalError('Reloading config')
+      }
     } catch (e) {
       if (e instanceof NonFatalError) {
         log(`Non-fatal error ${a.colId}-${a.id}, ${e}`)
@@ -58,11 +71,8 @@ async function runAssets(driver) {
   if (fatal) {
     await driver.quit()
     run()
-  } else if (assets.length > 0) {
-    runAssets(driver)
   } else {
-    log('No assets to run')
-    await driver.quit()
+    runAssets(driver)
   }
 }
 
