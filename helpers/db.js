@@ -1,13 +1,20 @@
 require('dotenv').config()
 let c = require('../constants')
 const log = require('./log');
+
 const DB_URL = `http://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}`
 const BIDS_TABLE = 'bids'
 const ASSETS_TABLE = 'assets'
 
+const getNano = () => {
+  if (!this.nano) this.nano = require('nano')(DB_URL)
+
+  return this.nano
+}
+
 async function loadConfig() {
   try {
-    const nano = require('nano')(DB_URL);
+    const nano = getNano();
     const config = await nano.use('config')
     const global = await config.get('global')
     const collections = await config.get('collections')
@@ -25,7 +32,7 @@ async function loadConfig() {
 
 async function updateCollection(colId, assetId, bid) {
   try {
-    const nano = require('nano')(DB_URL);
+    const nano = getNano();
     const table = await nano.use(ASSETS_TABLE)
     const colData = await table.get(colId)
 
@@ -52,7 +59,7 @@ async function updateCollection(colId, assetId, bid) {
 
 async function getBids(colId, assetId) {
   try {
-    const nano = require('nano')(DB_URL);
+    const nano = getNano();
     const table = await nano.use(BIDS_TABLE)
 
     const docs = await table.find({
@@ -70,7 +77,7 @@ async function getBids(colId, assetId) {
 
 async function getAssets(colId) {
   try {
-    const nano = require('nano')(DB_URL);
+    const nano = getNano();
     const table = await nano.use(ASSETS_TABLE)
     const colData = await table.get(colId)
 
