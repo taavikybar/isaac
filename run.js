@@ -7,20 +7,15 @@ const co = require('./helpers/collection')
 const s = require('./helpers/setup')
 const log = require('./helpers/log');
 const db = require('./helpers/db');
-const sniper = require('./helpers/sniper');
 const { Driver } = require('selenium-webdriver/chrome');
 const NonFatalError = require('./helpers/NonFatalError')
 
 
 async function run() {
   await db.loadConfig()
+
   const driver = await s.setup()
   let fatal = false
-
-  if (c.sniper === process.env.ID) {
-    log('Sniper started')
-    sniper.getFloorPrices()
-  }
 
   try {
     await s.unlockMetamask(driver)

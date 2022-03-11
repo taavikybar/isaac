@@ -91,7 +91,6 @@ async function getAssets(colId) {
   }
 }
 
-
 module.exports = {
   loadConfig,
   updateCollection,
