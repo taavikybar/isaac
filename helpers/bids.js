@@ -35,16 +35,20 @@ async function placeBid(driver, a) {
     return false
   }
 
-  // open bid modal
+  // click Make Offer button and open bid modal
   const offerBtn = await driver.findElement(By.xpath(`//button[text()='${c.offerButtonTxt}']`))
   await offerBtn.click()
 
   // look for Accept Terms button
   try {
     const agreeTerms = await driver.wait(webdriver.until.elementLocated(By.xpath(`//input[@id='review-confirmation']`)), 1000);
-
     await agreeTerms.click()
-  } catch {}
+  } catch { }
+
+  // check if Welcome to OS modal has appeared
+  try {
+    d.checkForWelcomeToOSModal(driver)
+  } catch { }
 
   // enter bid
   const offerInput = await driver.findElement(By.xpath(`//input[@placeholder='${c.inputPlaceholder}']`))
@@ -60,15 +64,8 @@ async function placeBid(driver, a) {
 
   // check if permissions to access modal has appeared
   try {
-    await driver.wait(webdriver.until.elementLocated(
-      By.xpath(`//*[contains(text(),'${c.permissionModalText}')]`)), 1000);
-
-    const rejectBtn = await driver.findElement(
-      By.xpath(`//button[text()='${c.rejectButtonText}']`))
-
-    await rejectBtn.click()
-    await d.switchToWindow(driver, 1)
-  } catch {}
+    d.checkForPermissionModal(driver)
+  } catch { }
 
   // sign bid
   const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))

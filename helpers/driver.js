@@ -1,4 +1,4 @@
-const webdriver = require("selenium-webdriver");
+const webdriver = require('selenium-webdriver');
 const By = webdriver.By
 const co = require('./collection')
 const log = require('./log')
@@ -64,9 +64,37 @@ async function switchToWindow(driver, index) {
   await h.sleep(1000)
 }
 
+async function checkForWelcomeToOSModal(driver) {
+  const windows = await driver.getAllWindowHandles()
+
+  if (windows.length > 1) {
+    await switchToWindow(driver, 1)
+
+    await driver.wait(webdriver.until.elementLocated(
+      By.xpath(`//*[contains(text(),'${c.welcomeToOSText}')]`)), 1000);
+
+    const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
+    await signBtn.click()
+    await switchToWindow(driver, 0)
+  }
+}
+
+async function checkForPermissionModal(driver) {
+  await driver.wait(webdriver.until.elementLocated(
+    By.xpath(`//*[contains(text(),'${c.permissionModalText}')]`)), 1000);
+
+  const rejectBtn = await driver.findElement(
+    By.xpath(`//button[text()='${c.rejectButtonText}']`))
+
+  await rejectBtn.click()
+  await switchToWindow(driver, 1)
+}
+
 module.exports = {
   findErrorElement,
   closeOtherWindows,
   switchToWindow,
   findNullOwnerElement,
+  checkForWelcomeToOSModal,
+  checkForPermissionModal,
 }
