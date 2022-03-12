@@ -64,25 +64,9 @@ async function switchToWindow(driver, index) {
   await h.sleep(1000)
 }
 
-async function checkForWelcomeToOSModal(driver) {
-  const windows = await driver.getAllWindowHandles()
-
-  if (windows.length > 1) {
-    await switchToWindow(driver, 1)
-
-    await driver.wait(webdriver.until.elementLocated(
-      By.xpath(`//*[contains(text(),'${c.welcomeToOSText}')]`)), 1000);
-
-    const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
-    await signBtn.click()
-    await switchToWindow(driver, 0)
-  }
-}
-
 module.exports = {
   findErrorElement,
   closeOtherWindows,
   switchToWindow,
   findNullOwnerElement,
-  checkForWelcomeToOSModal,
 }

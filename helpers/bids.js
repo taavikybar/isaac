@@ -47,7 +47,18 @@ async function placeBid(driver, a) {
 
   // check if Welcome to OS modal has appeared
   try {
-    d.checkForWelcomeToOSModal(driver)
+    const windows = await driver.getAllWindowHandles()
+
+    if (windows.length > 1) {
+      await d.switchToWindow(driver, 1)
+
+      await driver.wait(webdriver.until.elementLocated(
+        By.xpath(`//*[contains(text(),'${c.welcomeToOSText}')]`)), 1000);
+
+      const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
+      await signBtn.click()
+      await d.switchToWindow(driver, 0)
+    }
   } catch { }
 
   // enter bid
@@ -66,10 +77,10 @@ async function placeBid(driver, a) {
   try {
     await driver.wait(webdriver.until.elementLocated(
       By.xpath(`//*[contains(text(),'${c.permissionModalText}')]`)), 1000);
-  
+
     const rejectBtn = await driver.findElement(
       By.xpath(`//button[text()='${c.rejectButtonText}']`))
-  
+
     await rejectBtn.click()
     await d.switchToWindow(driver, 1)
   } catch { }
