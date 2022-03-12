@@ -79,22 +79,10 @@ async function checkForWelcomeToOSModal(driver) {
   }
 }
 
-async function checkForPermissionModal(driver) {
-  await driver.wait(webdriver.until.elementLocated(
-    By.xpath(`//*[contains(text(),'${c.permissionModalText}')]`)), 1000);
-
-  const rejectBtn = await driver.findElement(
-    By.xpath(`//button[text()='${c.rejectButtonText}']`))
-
-  await rejectBtn.click()
-  await switchToWindow(driver, 1)
-}
-
 module.exports = {
   findErrorElement,
   closeOtherWindows,
   switchToWindow,
   findNullOwnerElement,
   checkForWelcomeToOSModal,
-  checkForPermissionModal,
 }
