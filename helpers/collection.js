@@ -13,16 +13,16 @@ async function isAssetValid(a) {
     return true
   }
 
-  if (c.runOnlyUntouched) {
-    return false
-  }
-
   const hoursSince = Math.floor(
     (new Date() - new Date(a.lastBidDate))
     / MS_IN_H
   )
 
-  return hoursSince > c.bidDays * H_IN_DAY
+  if (h.isBid(a)) {
+    return hoursSince > c.bidDays * H_IN_DAY
+  }
+
+  return hoursSince > c.otherRetryDays * H_IN_DAY
 }
 
 // public
@@ -32,7 +32,10 @@ const getColById = id => c.collections.find(col => col.id === id)
 
 async function getAssets() {
   let assets = []
-  const colIds = c.collections.filter(c => c.worker === process.env.ID).map(c => c.id)
+  
+  const colIds = c.collections
+    .filter(c => c.worker === process.env.ID)
+    .map(c => c.id)
 
   log(`Running on collections: ${colIds}`)
 
