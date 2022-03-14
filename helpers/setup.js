@@ -23,7 +23,7 @@ async function setup() {
 }
 
 async function unlockMetamask(driver) {
-  await h.sleep(2000)
+  await h.sleep(6000)
   let el = await driver.findElement(By.tagName('input'));
   await driver.wait(webdriver.until.elementIsVisible(el), 10000);
   await el.sendKeys(process.env.PASS);
