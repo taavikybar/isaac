@@ -49,7 +49,10 @@ const getLoad = async () => {
 
   for (const col of runnableCols) {
     let assets = await db.getAssets(col.id)
-    assets = assets?.filter(co.isAssetValid)
+
+    if (!assets) continue
+
+    assets = assets.filter(co.isAssetValid)
     total = total + assets.length
 
     if (!taken.includes(col.id)) {
