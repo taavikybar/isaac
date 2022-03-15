@@ -42,12 +42,11 @@ async function runAssets(driver) {
   assets = h.shuffleArray(assets)
 
   if (assets.length === 0) {
-    log('No assets to run')
-    await driver.quit()
-    return false
+    log(`No assets to run, waiting ${c.minToWait}min`)
+    await h.sleep(c.minToWait * 60 * 1000)
   }
 
-  for (a of assets) {
+  for (const a of assets) {
     try {
       await b.placeBid(driver, a)
       assetsRun++
