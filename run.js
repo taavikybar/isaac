@@ -7,13 +7,13 @@ const co = require('./helpers/collection')
 const s = require('./helpers/setup')
 const log = require('./helpers/log');
 const db = require('./helpers/db');
+const balancer = require('./helpers/balancer');
 const { Driver } = require('selenium-webdriver/chrome');
 const NonFatalError = require('./helpers/NonFatalError')
 
 
 async function run() {
   await db.loadConfig()
-
   const driver = await s.setup()
   let fatal = false
 
@@ -35,7 +35,7 @@ async function run() {
 
 async function runAssets(driver) {
   await db.loadConfig()
-  let assets = await co.getAssets()
+  let assets = await balancer.getLoad()
   let fatal = false
   let assetsRun = 0
 
@@ -46,8 +46,6 @@ async function runAssets(driver) {
     await driver.quit()
     return false
   }
-
-  log(`Running all ${assets.length} assets`)
 
   for (a of assets) {
     try {
