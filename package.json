@@ -6,6 +6,7 @@
     "simple-node-logger": "^21.8.12"
   },
   "scripts": {
-    "run": "node run.js"
+    "run": "node run.js",
+    "remove": "node ./scripts/remove-worker.js"
   }
 }

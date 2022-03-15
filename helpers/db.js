@@ -109,10 +109,30 @@ async function updateTable(dbName, tableId, data) {
   }
 }
 
+async function deleteTable(dbName, tableId) {
+  try {
+    const nano = await getNano()
+    const db = await nano.use(dbName)
+    const list = await db.list()
+    const ids = list.rows.map(r => r.id)
+
+    if (ids.includes(tableId)) {
+      const tableData = await db.get(tableId)
+
+      await db.destroy(tableData._id, tableData._rev)
+    }
+
+    log(`Deleted ${tableId}`)
+  } catch (e) {
+    log(`DB deleteTable error: ${e}`)
+  }
+}
+
 module.exports = {
   loadConfig,
   updateCollection,
   getAssets,
   getDb,
   updateTable,
+  deleteTable,
 }
