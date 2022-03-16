@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs')
 const c = require('../constants')
 const h = require('./helpers')
 const log = require('./log')

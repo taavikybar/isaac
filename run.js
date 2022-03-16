@@ -1,14 +1,14 @@
 require('dotenv').config()
-const { performance } = require('perf_hooks');
+const { performance } = require('perf_hooks')
 const h = require('./helpers/helpers')
 const c = require('./constants')
 const b = require('./helpers/bids')
 const co = require('./helpers/collection')
 const s = require('./helpers/setup')
-const log = require('./helpers/log');
-const db = require('./helpers/db');
-const balancer = require('./helpers/balancer');
-const { Driver } = require('selenium-webdriver/chrome');
+const log = require('./helpers/log')
+const db = require('./helpers/db')
+const balancer = require('./helpers/balancer')
+const { Driver } = require('selenium-webdriver/chrome')
 const NonFatalError = require('./helpers/NonFatalError')
 
 

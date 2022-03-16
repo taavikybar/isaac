@@ -1,4 +1,4 @@
-const webdriver = require('selenium-webdriver');
+const webdriver = require('selenium-webdriver')
 const By = webdriver.By
 const co = require('./collection')
 const log = require('./log')
@@ -13,7 +13,7 @@ async function findErrorElement(driver, a, text, updateText) {
   try {
     await driver.wait(
       webdriver.until.elementLocated(By.xpath(`//*[contains(.,'${text}')]`)),
-      1000);
+      1000)
 
     await db.updateCollection(a.colId, a.id, updateText)
     found = true
@@ -30,7 +30,7 @@ async function findNullOwnerElement(driver, a) {
   try {
     await driver.wait(
       webdriver.until.elementLocated(By.xpath(`//*[contains(text(),"Owned by")]/a[.//*[contains(text(),"NullAddress")]]`)),
-      1000);
+      1000)
 
     await db.updateCollection(a.colId, a.id, c.nullAddress)
     found = true

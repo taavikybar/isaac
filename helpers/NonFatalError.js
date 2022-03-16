@@ -1,6 +1,6 @@
 class NonFatalError extends Error {
   constructor(message, options) {
-    super(message, options);
+    super(message, options)
   }
 }
 

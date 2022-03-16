@@ -1,4 +1,4 @@
-const webdriver = require("selenium-webdriver");
+const webdriver = require("selenium-webdriver")
 const By = webdriver.By
 const NonFatalError = require('./NonFatalError')
 const h = require('./helpers')
@@ -16,7 +16,7 @@ async function placeBid(driver, a) {
   await d.closeOtherWindows(driver)
 
   await h.sleep(1000)
-  await driver.navigate().to(url);
+  await driver.navigate().to(url)
   await h.sleep(1000)
 
   // try if 404/504 or owned by NullAddress
@@ -28,7 +28,7 @@ async function placeBid(driver, a) {
   // check if offers present
   try {
     const noOffers = await driver.wait(
-      webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000);
+      webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000)
   } catch {
     await db.updateCollection(a.colId, a.id, c.bidPresent)
     log(`${a.colId}-${a.id}, ${c.bidPresent}`)
@@ -41,7 +41,7 @@ async function placeBid(driver, a) {
 
   // look for Accept Terms button
   try {
-    const agreeTerms = await driver.wait(webdriver.until.elementLocated(By.xpath(`//input[@id='review-confirmation']`)), 1000);
+    const agreeTerms = await driver.wait(webdriver.until.elementLocated(By.xpath(`//input[@id='review-confirmation']`)), 1000)
     await agreeTerms.click()
   } catch { }
 
@@ -53,7 +53,7 @@ async function placeBid(driver, a) {
       await d.switchToWindow(driver, 1)
 
       await driver.wait(webdriver.until.elementLocated(
-        By.xpath(`//*[contains(text(),'${c.welcomeToOSText}')]`)), 1000);
+        By.xpath(`//*[contains(text(),'${c.welcomeToOSText}')]`)), 1000)
 
       const signBtn = await driver.findElement(By.xpath(`//button[text()='${c.signButtonText}']`))
       await signBtn.click()
@@ -76,7 +76,7 @@ async function placeBid(driver, a) {
   // check if permissions to access modal has appeared
   try {
     await driver.wait(webdriver.until.elementLocated(
-      By.xpath(`//*[contains(text(),'${c.permissionModalText}')]`)), 1000);
+      By.xpath(`//*[contains(text(),'${c.permissionModalText}')]`)), 1000)
 
     const rejectBtn = await driver.findElement(
       By.xpath(`//button[text()='${c.rejectButtonText}']`))
@@ -97,7 +97,7 @@ async function placeBid(driver, a) {
   try {
     await driver.wait(
       webdriver.until.elementLocated(By.xpath(`//*[text()='${c.offerSubmitted}']`)),
-      10000);
+      10000)
 
     await db.updateCollection(a.colId, a.id, bid)
     c.bidsMade++
