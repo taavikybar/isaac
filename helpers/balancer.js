@@ -18,13 +18,13 @@ const getTaken = async () => {
   return taken
 }
 
-const getLoadFromFree = (free, perWorker) => {
+const getLoadFromFree = free => {
   let load = []
   const cols = []
   free = h.shuffleArray(free)
 
   free.forEach(col => {
-    if (load.length > perWorker) {
+    if (load.length > c.minLoad) {
       return false
     }
 
@@ -41,37 +41,31 @@ const getLoadFromFree = (free, perWorker) => {
 }
 
 const getLoad = async () => {
-  let total = 0
   let free = []
   const taken = await getTaken()
-  const nrOfWorkers = Object.keys(c.wallets).length
   const runnableCols = c.collections.filter(col => col.run)
 
   for (const col of runnableCols) {
-    let assets = await db.getAssets(col.id)
-
+    const assets = await db.getAssets(col.id)
+    
     if (!assets) continue
-
-    assets = assets.filter(co.isAssetValid)
-    total = total + assets.length
 
     if (!taken.includes(col.id)) {
       free.push({
         id: col.id,
-        assets,
+        assets: assets.filter(co.isAssetValid),
       })
     }
   }
 
-  const perWorker = Math.floor(total / nrOfWorkers)
-  const load = getLoadFromFree(free, perWorker)
+  const load = getLoadFromFree(free)
 
   db.updateTable('workers', process.env.ID, {
     collections: load.cols,
     load: load.load.length,
   })
 
-  log(`Load: ${load.load.length} assets, perWorker: ${perWorker}`)
+  log(`Load: ${load.load.length} assets`)
 
   return load.load
 }
