@@ -39,12 +39,6 @@ async function placeBid(driver, a) {
   const offerBtn = await driver.findElement(By.xpath(`//button[text()='${c.offerButtonTxt}']`))
   await offerBtn.click()
 
-  // look for Accept Terms button
-  try {
-    const agreeTerms = await driver.wait(webdriver.until.elementLocated(By.xpath(`//input[@id='review-confirmation']`)), 1000)
-    await agreeTerms.click()
-  } catch { }
-
   // check if Welcome to OS modal has appeared
   try {
     const windows = await driver.getAllWindowHandles()
@@ -59,6 +53,12 @@ async function placeBid(driver, a) {
       await signBtn.click()
       await d.switchToWindow(driver, 0)
     }
+  } catch { }
+
+  // look for Accept Terms button
+  try {
+    const agreeTerms = await driver.wait(webdriver.until.elementLocated(By.xpath(`//input[@id='review-confirmation']`)), 1000)
+    await agreeTerms.click()
   } catch { }
 
   // enter bid
