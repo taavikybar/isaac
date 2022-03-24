@@ -90,6 +90,18 @@ async function getDb(dbName) {
   }
 }
 
+async function getData(db, tableId) {
+  try {
+    const nano = getNano()
+    const config = await nano.use(db)
+    const table = await config.get(tableId)
+
+    return table
+  } catch (e) {
+    log(`DB getData error: ${e}`)
+  }
+}
+
 async function updateTable(dbName, tableId, data) {
   try {
     const nano = await getNano()
@@ -135,4 +147,5 @@ module.exports = {
   getDb,
   updateTable,
   deleteTable,
+  getData,
 }

@@ -24,8 +24,12 @@ const isAssetValid = a => {
   return hoursSince > c.otherRetryDays * H_IN_DAY
 }
 
-const getUrl = (colId, assetId) =>
-  `${c.assetBaseUrl}/${getColById(colId).contract}/${assetId}`
+const getUrl = async (colId, assetId) => {
+  const contracts = await db.getData('config', 'contracts')
+  const contract = contracts.contracts[colId]
+
+  return `${c.assetBaseUrl}/${contract}/${assetId}`
+}
 
 const getColById = id => c.collections.find(col => col.id === id)
 
