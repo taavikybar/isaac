@@ -10,7 +10,7 @@ const getTaken = async () => {
   const workersData = await db.getDb('workers')
 
   workersData
-    .filter(w => w.id !== process.env.ID)
+    .filter(w => w._id !== process.env.ID)
     .forEach(w => {
       taken = [...taken, ...w.collections]
     })
