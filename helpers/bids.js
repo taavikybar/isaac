@@ -26,14 +26,14 @@ async function placeBid(driver, a) {
   await d.findNullOwnerElement(driver, a)
 
   // check if offers present
-  try {
-    const noOffers = await driver.wait(
-      webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000)
-  } catch {
-    await db.updateCollection(a.colId, a.id, c.bidPresent)
-    log(`${a.colId}-${a.id}, ${c.bidPresent}`)
-    return false
-  }
+  // try {
+  //   const noOffers = await driver.wait(
+  //     webdriver.until.elementLocated(By.xpath(`//*[text()='${c.nOofferxTxt}']`)), 1000)
+  // } catch {
+  //   await db.updateCollection(a.colId, a.id, c.bidPresent)
+  //   log(`${a.colId}-${a.id}, ${c.bidPresent}`)
+  //   return false
+  // }
 
   // click Make Offer button and open bid modal
   const offerBtn = await driver.findElement(By.xpath(`//button[text()='${c.offerButtonTxt}']`))
